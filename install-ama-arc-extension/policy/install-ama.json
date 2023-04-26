@@ -1,0 +1,217 @@
+{
+  "properties": {
+    "displayName": "[Preview]: Install AMA Arc extension on your Azure Stack HCI Clusters",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Deploy ARM template to install ama extension on your Azure Stack HCI clusters if it does not exist. along with creating DCR rule and DCR association",
+    "metadata": {
+      "category": "Azure Arc",
+      "createdBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
+      "createdOn": "2023-04-20T09:02:52.4395687Z",
+      "updatedBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
+      "updatedOn": "2023-04-25T06:06:52.499993Z"
+    },
+    "parameters": {
+      "workspaceId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "workspaceId",
+          "description": "Workspace Id of the workspace to be associated with AMA agent extension"
+        },
+        "defaultValue": "test"
+      },
+      "workspaceName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "workspaceName",
+          "description": "Name of the Workspace to be associated with AMA agent extension"
+        },
+        "defaultValue": "test"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.AzureStackHCI/clusters"
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+          "name": "[concat(field('name'), '/default/AzureMonitorWindowsAgent')]",
+          "evaluationDelay": "PT15M",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/extensionParameters.type",
+                "equals": "AzureMonitorWindowsAgent"
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "clusterName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "The name of Cluster."
+                    }
+                  },
+                  "workspaceId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Workspace Id of the workspace to be associated with AMA agent extension"
+                    }
+                  },
+                  "workspaceName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "Name of the Workspace to be associated with AMA agent extension"
+                    }
+                  },
+                  "location": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "location"
+                    }
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Insights/dataCollectionRules",
+                    "apiVersion": "2021-09-01-preview",
+                    "name": "[concat(resourceGroup().name, '-DataCollectionRule')]",
+                    "location": "[parameters('location')]",
+                    "tags": {
+                      "tagName1": "tagValue1",
+                      "tagName2": "tagValue2"
+                    },
+                    "properties": {
+                      "destinations": {
+                        "logAnalytics": [
+                          {
+                            "name": "[parameters('workspaceName')]",
+                            "workspaceId": "[parameters('workspaceId')]",
+                            "workspaceResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourcegroups/', resourceGroup().name, '/providers/microsoft.operationalinsights/workspaces/', parameters('workspaceName'))]"
+                          }
+                        ]
+                      },
+                      "dataSources": {
+                        "performanceCounters": [
+                          {
+                            "counterSpecifiers": [
+                              "\\Memory(*)\\Available Bytes",
+                              "\\Network Interface(*)\\Bytes Total/sec",
+                              "\\Processor(_Total)\\% Processor Time",
+                              "\\RDMA Activity(*)\\RDMA Inbound Bytes/sec",
+                              "\\RDMA Activity(*)\\RDMA Outbound Bytes/sec"
+                            ],
+                            "name": "perfCounterDataSource",
+                            "samplingFrequencyInSeconds": "10",
+                            "streams": [
+                              "Microsoft-Perf"
+                            ]
+                          }
+                        ],
+                        "windowsEventLogs": [
+                          {
+                            "name": "eventLogsDataSource",
+                            "streams": [
+                              "Microsoft-Event"
+                            ],
+                            "xPathQueries": [
+                              "Microsoft-Windows-SDDC-Management/Operational!*[System[(EventID=3000 or EventID=3001 or EventID=3002 or EventID=3003 or EventID=3004)]]",
+                              "microsoft-windows-health/operational!*"
+                            ]
+                          }
+                        ]
+                      },
+                      "dataFlows": [
+                        {
+                          "destinations": [
+                            "[parameters('workspaceName')]"
+                          ],
+                          "streams": [
+                            "Microsoft-Perf"
+                          ]
+                        },
+                        {
+                          "destinations": [
+                            "[parameters('workspaceName')]"
+                          ],
+                          "streams": [
+                            "Microsoft-Event"
+                          ]
+                        }
+                      ],
+                      "description": "Data Collection Rule for Azure Monitoring Agent Arc extension."
+                    }
+                  },
+                  {
+                    "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+                    "apiVersion": "2022-12-01",
+                    "name": "[concat(parameters('clusterName'), '/default/AzureMonitorWindowsAgent')]",
+                    "properties": {
+                      "extensionParameters": {
+                        "publisher": "Microsoft.Azure.Monitor",
+                        "type": "AzureMonitorWindowsAgent",
+                        "autoUpgradeMinorVersion": false,
+                        "enableAutomaticUpgrade": false
+                      }
+                    }
+                  },
+                  {
+                    "type": "Microsoft.Insights/dataCollectionRuleAssociations",
+                    "apiVersion": "2021-09-01-preview",
+                    "name": "[concat(parameters('clusterName'), '-dataCollectionRuleAssociations')]",
+                    "scope": "[concat('Microsoft.AzureStackHCI/clusters/', parameters('clusterName'))]",
+                    "dependsOn": [
+                      "[resourceId('Microsoft.AzureStackHCI/clusters/arcSettings/extensions', parameters('clusterName'), 'default', 'AzureMonitorWindowsAgent')]",
+                      "[resourceId('Microsoft.Insights/dataCollectionRules', concat(resourceGroup().name, '-DataCollectionRule'))]"
+                    ],
+                    "properties": {
+                      "description": "Association of data collection rule. Deleting this association will break the data collection for this cluster",
+                      "dataCollectionRuleId": "[resourceId('Microsoft.Insights/dataCollectionRules', concat(resourceGroup().name, '-DataCollectionRule'))]"
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "clusterName": {
+                  "value": "[field('Name')]"
+                },
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "workspaceId": {
+                  "value": "[parameters('workspaceId')]"
+                },
+                "workspaceName": {
+                  "value": "[parameters('workspaceName')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/08fefd37-e97e-4a72-82a8-57fabab2469d",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "08fefd37-e97e-4a72-82a8-57fabab2469d",
+  "systemData": {
+    "createdBy": "priyjain@microsoft.com",
+    "createdByType": "User",
+    "createdAt": "2023-04-20T09:02:52.4122195Z",
+    "lastModifiedBy": "priyjain@microsoft.com",
+    "lastModifiedByType": "User",
+    "lastModifiedAt": "2023-04-25T06:06:52.3687276Z"
+  }
+}

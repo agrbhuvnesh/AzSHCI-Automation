@@ -1,0 +1,139 @@
+{
+  "properties": {
+    "displayName": "[Preview]: Install MMA Arc extension on your Azure Stack HCI Clusters",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Deploy ARM template to install log analytics extension on your Azure Stack HCI clusters if it does not exist.",
+    "metadata": {
+      "category": "Azure Arc",
+      "createdBy": "9adc8d29-fb23-4019-839a-b8618f123ef0",
+      "createdOn": "2023-04-19T05:57:16.4647364Z",
+      "updatedBy": "9adc8d29-fb23-4019-839a-b8618f123ef0",
+      "updatedOn": "2023-04-24T05:00:34.229651Z"
+    },
+    "parameters": {
+      "workspaceId": {
+        "type": "String",
+        "metadata": {
+          "displayName": "workspaceId",
+          "description": "Give an Id"
+        },
+        "defaultValue": "test"
+      },
+      "workspaceKey": {
+        "type": "String",
+        "metadata": {
+          "displayName": "workspaceKey",
+          "description": "Give a key"
+        },
+        "defaultValue": "test"
+      }
+    },
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.AzureStackHCI/clusters"
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+          "name": "[concat(field('name'), '/default/MicrosoftMonitoringAgent')]",
+          "evaluationDelay": "PT15M",
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/extensionParameters.type",
+                "equals": "MicrosoftMonitoringAgent"
+              },
+              {
+                "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/extensionParameters.publisher",
+                "equals": "Microsoft.EnterpriseCloud.Monitoring"
+              },
+              {
+                "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/provisioningState",
+                "equals": "Succeeded"
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "clusterName": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "The name of Cluster."
+                    }
+                  },
+                  "workspaceId": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "The name of Cluster."
+                    }
+                  },
+                  "workspaceKey": {
+                    "type": "string",
+                    "metadata": {
+                      "description": "The name of Cluster."
+                    }
+                  }
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+                    "apiVersion": "2022-12-01",
+                    "name": "[concat(parameters('clusterName'), '/default/MicrosoftMonitoringAgent')]",
+                    "properties": {
+                      "extensionParameters": {
+                        "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                        "type": "MicrosoftMonitoringAgent",
+                        "typeHandlerVersion": "1.0.18067.0",
+                        "autoUpgradeMinorVersion": false,
+                        "enableAutomaticUpgrade": false,
+                        "settings": {
+                          "workspaceId": "[parameters('workspaceId')]"
+                        },
+                        "protectedSettings": {
+                          "workspaceKey": "[parameters('workspaceKey')]"
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "clusterName": {
+                  "value": "[field('Name')]"
+                },
+                "workspaceId": {
+                  "value": "[parameters('workspaceId')]"
+                },
+                "workspaceKey": {
+                  "value": "[parameters('workspaceKey')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/c6792e6d-a7a3-4786-bc1d-42ae05fe88ed",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "c6792e6d-a7a3-4786-bc1d-42ae05fe88ed",
+  "systemData": {
+    "createdBy": "kudeepak@microsoft.com",
+    "createdByType": "User",
+    "createdAt": "2023-04-19T05:57:16.3605486Z",
+    "lastModifiedBy": "kudeepak@microsoft.com",
+    "lastModifiedByType": "User",
+    "lastModifiedAt": "2023-04-24T05:00:33.878631Z"
+  }
+}
