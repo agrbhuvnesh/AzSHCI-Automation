@@ -1,0 +1,118 @@
+{
+    "properties": {
+      "displayName": "[Preview]: Install WAC Arc extension on your Azure Stack HCI Clusters",
+      "policyType": "Custom",
+      "mode": "All",
+      "description": "Deploy ARM template to install WAC extension on your Azure Stack HCI clusters if it does not exist.",
+      "metadata": {
+        "category": "Azure Arc",
+        "createdBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
+        "createdOn": "2023-04-26T08:27:32.9266847Z",
+        "updatedBy": null,
+        "updatedOn": null
+      },
+      "parameters": {
+        "port": {
+          "type": "String",
+          "metadata": {
+            "displayName": "port",
+            "description": "Give a port for WAC extension"
+          },
+          "defaultValue": "6516"
+        }
+      },
+      "policyRule": {
+        "if": {
+          "field": "type",
+          "equals": "Microsoft.AzureStackHCI/clusters"
+        },
+        "then": {
+          "effect": "deployIfNotExists",
+          "details": {
+            "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+            "name": "[concat(field('name'), '/default/AdminCenter')]",
+            "evaluationDelay": "PT15M",
+            "roleDefinitionIds": [
+              "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+            ],
+            "existenceCondition": {
+              "allOf": [
+                {
+                  "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/extensionParameters.type",
+                  "equals": "AdminCenter"
+                },
+                {
+                  "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/extensionParameters.publisher",
+                  "equals": "Microsoft.AdminCenter"
+                },
+                {
+                  "field": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions/provisioningState",
+                  "equals": "Succeeded"
+                }
+              ]
+            },
+            "deployment": {
+              "properties": {
+                "mode": "incremental",
+                "template": {
+                  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                  "contentVersion": "1.0.0.0",
+                  "parameters": {
+                    "clusterName": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "The name of Cluster."
+                      }
+                    },
+                    "port": {
+                      "type": "string",
+                      "metadata": {
+                        "description": "port for WAC extension"
+                      }
+                    }
+                  },
+                  "resources": [
+                    {
+                      "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+                      "apiVersion": "2022-12-01",
+                      "name": "[concat(parameters('clusterName'), '/default/AdminCenter')]",
+                      "properties": {
+                        "extensionParameters": {
+                          "publisher": "Microsoft.AdminCenter",
+                          "type": "AdminCenter",
+                          "autoUpgradeMinorVersion": false,
+                          "enableAutomaticUpgrade": false,
+                          "settings": {
+                            "port": "[parameters('port')]"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                "parameters": {
+                  "clusterName": {
+                    "value": "[field('Name')]"
+                  },
+                  "port": {
+                    "value": "[parameters('port')]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/af526c5e-3283-47fc-b1c0-176df94336cd",
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "name": "af526c5e-3283-47fc-b1c0-176df94336cd",
+    "systemData": {
+      "createdBy": "priyjain@microsoft.com",
+      "createdByType": "User",
+      "createdAt": "2023-04-26T08:27:32.8299939Z",
+      "lastModifiedBy": "priyjain@microsoft.com",
+      "lastModifiedByType": "User",
+      "lastModifiedAt": "2023-04-26T08:27:32.8299939Z"
+    }
+  }
