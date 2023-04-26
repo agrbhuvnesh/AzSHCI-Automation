@@ -6,14 +6,14 @@ Pre-requisites:
 
 Update Variables in Scripts:
 	1. Update DCRAssociation.json for below properties:
-		?  "name": "",
-		? "workspaceId": "",
-		? "workspaceResourceId": "" 
-		?  destinations: ""  <use the same name as given as step1>
+		"name": "",
+		"workspaceId": "",
+		"workspaceResourceId": "" 
+		destinations: ""  <use the same name as given as step1>
 	2. update 4 variables in install_ama_extn
-		? $subscriptionId = "test-subscription"
-		? $resourceGroup = "test-rg"
-		? $DCRFilePath = "DCRAssociation.json" #File Path to DCR json file
-		? $tenantId = ""
+		$subscriptionId = "test-subscription"
+		$resourceGroup = "test-rg"
+		$DCRFilePath = "DCRAssociation.json" #File Path to DCR json file
+		$tenantId = ""
 
 
