@@ -1,0 +1,23 @@
+{
+    "properties": {
+        "extensionParameters": {
+            "type": "Windows",
+            "publisher": "Microsoft.SiteRecovery.Dra",
+            "autoUpgradeMinorVersion": false,
+            "settings": {
+                "SubscriptionId":"680d0dad-59aa-4464-adf3-b34b2b427e8c",
+                "Environment":"AzureCloud", 
+                "ResourceGroup":"DefaultResourceGroup-EUS", 
+                "ResourceName":"DefaultBackupVault-eastus", 
+                "Location":"East US", 
+                "SiteId": "156474f8-faa6-549a-b877-e09f931ccd06", 
+                "SiteName":"testSite", 
+                "PrivateEndpointStateForSiteRecovery":"None"
+            },
+            "protectedSettings": {
+               
+            }
+        }
+    },
+    "name": "AzureSiteRecovery"
+}

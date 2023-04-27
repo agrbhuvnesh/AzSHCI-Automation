@@ -2,7 +2,6 @@ $tenantID = ""
 $subscriptionId = ""
 $resourceGroup = ""
 $DCRFilePath = "path to DCRAssociation.json"
-$clusters = "test1, test2"
 
 # Connect-AzAccount -Subscription $subscriptionId
 # New-AzDataCollectionRule -Location "East US" -ResourceGroupName bkumar-test-rg -RuleName "AMATestRule" -RuleFile "C:\bhuvi\azurestack\HCI\tryout\POC\DCRAssociation.json" -Description "Test DCR Rule for AMA"  -verbose

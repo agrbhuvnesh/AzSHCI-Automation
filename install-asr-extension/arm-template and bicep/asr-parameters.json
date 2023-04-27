@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"clusterNames": {
+			"value": [
+				{
+					"name": "test-clus-1"
+				}, 
+				{
+					"name": "test-clus-2"
+				}
+			]
+		},
+		"recoverySiteId": {
+			"value": "xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx"
+		},
+		"recoverySiteName": {
+			"value": "testSite"
+		},
+		"recoveryServicesVaultName": {
+			"value": "test-vault"
+		},
+		"recoveryServicesVaultResourceGroup": {
+			"value": "test-rg"
+		},
+		"recoveryServicesVaultLocation": {
+			"value": "East US"
+		}
+	}
+}

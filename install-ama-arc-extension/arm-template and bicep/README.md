@@ -22,3 +22,10 @@ New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resour
 
 deployment-name : any unique name for your deployment 
 resource-group: resource group to target which contains the resources
+
+To run the bicep: 
+
+New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group> -TemplateFile .\install-ama.bicep -TemplateParameterFile .\ama-parameters.json
+
+deployment-name : any unique name for your deployment 
+resource-group: resource group to target which contains the resources

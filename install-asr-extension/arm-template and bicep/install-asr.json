@@ -1,0 +1,84 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterNames": {
+            "type": "array",
+            "metadata": {
+                "description": "The names of the Azure Stack HCI clusters where the extension will be installed"
+            }
+        },
+        "recoverySiteId": {
+            "type": "string",
+            "metadata": {
+                "description": "SiteId of the recovery vault to be used while installing extension"
+            }
+        },
+        "recoverySiteName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the recovery site to be used while installing extension"
+            }
+        },
+        "privateEndpointStateForSiteRecovery": {
+            "type": "string",
+            "defaultValue": "None",
+            "metadata": {
+                "description": "Private endpoint state for site recovery. Allowed values: None, Pending, Approved, Rejected, Disconnected, Timeout, Ready, or Unknown"
+            }
+        },
+        "recoveryServicesVaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Recovery Vault Name"
+            }
+        },
+        "recoveryServicesVaultResourceGroup": {
+            "type": "string",
+            "metadata": {
+                "description": "Resource Group of the Recovery Vault"
+            }
+        },
+        "recoveryServicesVaultLocation": {
+            "type": "string",
+            "metadata": {
+                "description": "Location of the Recovery Vault"
+            }
+        }
+    },
+    "variables": {
+        "publisher": "Microsoft.SiteRecovery.Dra",
+        "type": "Windows",
+        "environment": "AzureCloud"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+            "name": "[concat( parameters('clusterNames')[copyIndex()].name, '/default/AzureSiteRecovery')]",
+            "apiVersion": "2023-02-01",
+            "copy": {
+                "name": "extensionCopy",
+                "count": "[length(parameters('clusterNames'))]"
+            },
+            "properties": {
+                "extensionParameters": {
+                    "publisher": "[variables('publisher')]",
+                    "type": "[variables('type')]",
+                    "autoUpgradeMinorVersion": false,
+                    "settings": {
+                        "SubscriptionId": "[subscription()]",
+                        "Environment": "[variables('environment')]",
+                        "ResourceGroup": "[parameters('recoveryServicesVaultResourceGroup')]",
+                        "ResourceName": "[parameters('recoveryServicesVaultName')]",
+                        "Location": "[parameters('recoveryServicesVaultLocation')]",
+                        "SiteId": "[parameters('recoverySiteId')]",
+                        "SiteName": "[parameters('recoverySiteName')]",
+                        "PrivateEndpointStateForSiteRecovery": "[parameters('privateEndpointStateForSiteRecovery')]"
+                    },
+                    "protectedSettings": {
+                    }
+                }
+            }
+        }
+    ]
+}
