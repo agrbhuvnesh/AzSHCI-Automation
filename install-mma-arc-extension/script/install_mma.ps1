@@ -7,7 +7,7 @@ $protectedSetting = "path to workspacekey_mma.json"
 $_ = az login --tenant $tenantId
 $_ = az account set -s  $subscriptionId
 
-$clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv
+$clusters = @(az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv)
 
 for ($i = 0; $i -lt $clusters.Count; $i++) {
     $currentCluster = $clusters[$i]
