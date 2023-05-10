@@ -1,0 +1,15 @@
+{
+    "properties": {
+        "extensionParameters": {
+            "type": "<replace with extension type>",
+            "publisher": "<replace with extension publisher>",
+            "settings": {
+                // Extension settings go here
+            },
+            "protectedSettings": {
+                // Extension protected settings go here
+            }
+        }
+    },
+    "name": "<replace with extension name>"
+}
