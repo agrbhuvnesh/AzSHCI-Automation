@@ -1,6 +1,7 @@
 $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
+$extensionName = ""
 $enableAutomaticUpgrade = $true
 
 Connect-AzAccount -Subscription $subscriptionId -Tenant $tenantId
@@ -8,7 +9,7 @@ Connect-AzAccount -Subscription $subscriptionId -Tenant $tenantId
 $clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty ResourceId
 
 $extensions = foreach ($cluster in $clusters) {
-    Get-AzResource -ResourceId "$cluster/arcSettings/default/extensions"
+    Get-AzResource -ResourceId "$cluster/arcSettings/default/extensions/$extensionName"
 }
 
 foreach ($extension in $extensions) {
@@ -43,3 +44,4 @@ foreach ($extension in $extensions) {
         -Payload $payload `
         -AsJob
 }
+
