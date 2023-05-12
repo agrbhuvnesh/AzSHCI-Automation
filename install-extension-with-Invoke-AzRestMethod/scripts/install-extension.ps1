@@ -11,7 +11,21 @@ $clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType "Micr
 
 for ($i = 0; $i -lt $clusters.Count; $i++) {
     $currentCluster = $clusters[$i]
-    
+
+    if ($extensionName -eq "AdminCenter") {
+        Write-Host ("Enabling Connectivity for cluster $currentCluster")
+        
+        Invoke-AzRestMethod `
+            -SubscriptionId $subscriptionId `
+            -ResourceGroupName $resourceGroup `
+            -ResourceProviderName "Microsoft.AzureStackHCI" `
+            -ResourceType @("clusters", "arcSettings") `
+            -Name @($currentCluster, "default")  `
+            -ApiVersion "2023-03-01" `
+            -Method PUT `
+            -Payload (@{"properties" = @{ "connectivityProperties" = @{ "enabled" = $true } } } | ConvertTo-Json -Depth 5)
+    }
+
     Write-Host ("Installing $extensionName extension for cluster $currentCluster")
 
     Invoke-AzRestMethod `
