@@ -1,6 +1,4 @@
-// This script deletes all the arc extensions for multiple Azure Stack HCI cluster.
-
-has context menu
+// This script deletes all the arc extensions for multiple Azure Stack HCI clusters.
 
 # Define subscriptionId, resourceGroup and tenantId
 $subscriptionId = ""

@@ -1,4 +1,4 @@
-// This script enables wss diagnostics.
+// This script enables wss diagnostics for Azure Stack HCI clusters.
 
 # Set the subscription ID, resource group, and tenant ID 
 $subscriptionId = ""

@@ -1,4 +1,4 @@
-//This script gets clusters with location EastUS
+//This script gets Azure Stack HCI clusters with location EastUS
 
 $subscriptionId = ""
 $resourceGroup = ""

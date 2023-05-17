@@ -1,0 +1,18 @@
+// This script deletes all the arc extensions for an Azure Stack HCI cluster.
+
+# Define subscriptionId, resourceGroup, tenantId and clusterId
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
+$clusterId = ""
+
+# Login to Azure by passing in the tenant ID
+$login = az login --tenant $tenantId
+
+# Set the active subscription to the one specified in $subscriptionId
+az account set -s $subscriptionId
+
+# For each cluster, start a job that deletes any Arc Extensions that are set up
+
+# Use Azure CLI to delete all Arc extensions for the current cluster
+az resource delete --$clusterId

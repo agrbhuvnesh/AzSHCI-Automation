@@ -1,4 +1,4 @@
-//This script gets clusters for imds attestation.
+//This script gets Azure Stack HCI clusters for imds attestation.
 
 $subscriptionId = ""
 $resourceGroup = ""

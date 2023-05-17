@@ -1,4 +1,4 @@
-//This is the script for enabling azure hybrid benefit.
+//This is the script for enabling azure hybrid benefit for multiple Azure Stack HCI clusters.
 
 # Define tenant, subscription and resourceGroup.
 $tenant = ""

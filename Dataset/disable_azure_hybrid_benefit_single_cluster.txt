@@ -1,0 +1,18 @@
+//This is the script for disabling azure hybrid benefit for an Azure Stack HCI cluster.
+
+# Define tenant, subscription and resourceGroup.
+$tenant = ""
+$subscription = ""
+$resourceGroup = ""
+
+# Set the active Azure subscription to the one specified in `$subscription`
+Set-AzContext -Subscription $subscription
+
+# Disable the software assurance benefit for the cluster by sending an API call to Azure
+Invoke-AzRestMethod -Method POST `
+-SubscriptionId $subscription `
+-ResourceGroupName $resourceGroup `
+-ResourceProviderName "Microsoft.AzureStackHCI" `
+-ResourceType "cluster" `
+-ApiVersion "2023-02-01" `
+-Payload '{"properties": { "softwareAssuranceIntent": "Disable" }}'

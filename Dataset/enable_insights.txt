@@ -1,4 +1,5 @@
 //This script enables insights as a part of capabilities provided by Azure Stack HCI.
+
 # Define an empty array to be updated later with event log names.
 $EventLogNames = @()
 
