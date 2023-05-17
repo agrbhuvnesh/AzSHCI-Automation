@@ -1,0 +1,20 @@
+// This script installs ama extension for a single Azure Stack HCI cluster.
+
+# Initialize tenantID, subscriptionId and resourceGroup.
+$tenantID = ""
+$subscriptionId = ""
+$resourceGroup = ""
+$clusterId = ""
+$DCRFilePath = "path to DCRAssociation.json"
+
+# Logging in to Azure using the tenant ID
+az login --tenant $tenantID
+# Setting the subscription ID
+az account set -s  $subscriptionId
+
+# Creating a new data collection rule with specified parameters
+az monitor data-collection rule create --name "AMATestRule" --resource-group $resourceGroup --rule-file $DCRFilePath --description "Test DCR Rule for AMA" --location "East US"
+
+# Installing the AMA extension and creating the data association rule for cluster
+az stack-hci extension create --arc-setting-name "default" --extension-name "AzureMonitorWindowsAgent" --resource-group $resourceGroup --auto-upgrade true --publisher "Microsoft.Azure.Monitor" --type "AzureMonitorWindowsAgent"
+az monitor data-collection rule association create --resource $clusterId --rule-id $dcrRuleId 

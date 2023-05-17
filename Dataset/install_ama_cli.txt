@@ -1,4 +1,4 @@
-// This script installs ama extension.
+// This script installs ama extension for multiple Azure Stack HCI clusters.
 
 # Initialize tenantID, subscriptionId and resourceGroup.
 $tenantID = ""

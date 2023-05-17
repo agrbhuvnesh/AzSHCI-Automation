@@ -1,0 +1,38 @@
+// This is an ARM template ARM template to install Windows Admin Center Arc Extension for Azure Stack HCI Clusters.
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterNames": {
+            "type": "array"
+        },
+		"port": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    //Install WAC extension on the clusters 
+    "resources": [
+        {
+            "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+            "apiVersion": "2022-12-01",
+			"name": "[concat(parameters('clusterNames')[copyIndex()].name, '/default/AdminCenter')]",
+            "properties": {
+				"extensionParameters" : {
+					"publisher": "Microsoft.AdminCenter",
+					"type": "AdminCenter",
+					"autoUpgradeMinorVersion": false,
+					"enableAutomaticUpgrade": true,
+					"settings": {
+						"port": "[parameters('port')]"
+					}
+				}
+            },
+			"copy": {
+                "name": "deploymentCopy",
+                "count": "[length(parameters('clusterNames'))]"
+            }
+        }
+    ]
+}

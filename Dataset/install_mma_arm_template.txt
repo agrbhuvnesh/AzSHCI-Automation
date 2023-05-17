@@ -1,0 +1,44 @@
+// This is an ARM template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterNames": {
+            "type": "array"
+        },
+		"workspaceId": {
+            "type": "string"
+        },
+		"workspaceKey": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+            "apiVersion": "2022-12-01",
+			"name": "[concat(parameters('clusterNames')[copyIndex()].name, '/default/MicrosoftMonitoringAgent')]",
+            "properties": {
+				"extensionParameters" : {
+					"publisher": "Microsoft.EnterpriseCloud.Monitoring",
+					"type": "MicrosoftMonitoringAgent",
+					"typeHandlerVersion": "1.0.18067.0",
+					"autoUpgradeMinorVersion": false,
+					"enableAutomaticUpgrade": true,
+					"settings": {
+						"workspaceId": "[parameters('workspaceId')]"
+					},
+					"protectedSettings": {
+						"workspaceKey" : "[parameters('workspaceKey')]"
+					}
+				}
+            },
+			"copy": {
+                "name": "deploymentCopy",
+                "count": "[length(parameters('clusterNames'))]"
+            }
+        }
+    ]
+}

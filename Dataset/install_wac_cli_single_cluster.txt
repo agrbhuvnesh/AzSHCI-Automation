@@ -1,0 +1,20 @@
+//This script installs Windows Admin Center Arc Extension for a single Azure Stack HCI Cluster.
+
+# Initialize subscriptionId, resourceGroup and tenantId.
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
+
+# Logging in to Azure using the tenant ID
+az login --tenant $tenantId
+# Setting the subscription ID
+az account set -s  $subscriptionId
+
+$settingsPath = "path to port-wac.json"
+$connectivityPath = "path to connectivity.json"
+
+# Updating connectivity properties with the specified settings
+az stack-hci arc-setting update --resource-group $using:resourceGroup --name "default" --connectivity-properties @$using:connectivityPath
+# Installing the WAC extension with the specified parameters
+az stack-hci extension create --arc-setting-name "default" --extension-name "AdminCenter" --resource-group $using:resourceGroup --publisher "Microsoft.AdminCenter" --type "AdminCenter" --settings @$using:settingsPath
+  

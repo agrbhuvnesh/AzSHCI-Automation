@@ -1,0 +1,19 @@
+//This script gets clusters with location EastUS
+
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
+
+
+#Using AZ POWERSHELL
+
+Connect-AzAccount -Tenant $tenantId
+Set-AzContext
+
+# get clusters in location EastUS 
+Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object location -eq "eastus" | Select-Object Name, Id
+
+#USING AZ CLI 
+
+$login = az login --tenant $tenantId
+az account set -s  $subscriptionId

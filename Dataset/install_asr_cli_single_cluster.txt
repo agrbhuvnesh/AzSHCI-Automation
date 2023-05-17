@@ -1,0 +1,16 @@
+// This script installs asr extension for a single Azure Stack HCI cluster.
+
+# Initialize tenantId, subscriptionId and resource groups and parameters file.
+$tenantID = ""
+$subscriptionId = ""
+$resourceGroup = ""
+$parametersFile = ".\asr-settings.json"
+
+# Logging in to Azure using the tenant ID
+az login --tenant $tenantID
+# Setting the subscription ID
+az account set -s  $subscriptionId
+
+# Creating the ASR extension with the specified parameters
+az stack-hci extension create --arc-setting-name "default" --extension-name "AzureSiteRecovery" --resource-group $using:resourceGroup --auto-upgrade true --publisher "Microsoft.SiteRecovery.Dra" --type "Windows" --settings @$using:parametersFile
+ 
