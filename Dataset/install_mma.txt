@@ -1,0 +1,27 @@
+//This script installs Microsoft Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+
+# Initialize subscriptionId, resourceGroup ,tenantId and settings
+$subscriptionId = "test-subscription"
+$resourceGroup = "test-rg"
+$tenantId = ""
+$settings= "path to workspace_mma.json"
+$protectedSetting = "path to workspacekey_mma.json"
+
+# Logging in to Azure using the tenant ID
+$_ = az login --tenant $tenantId
+# Setting the subscription ID
+$_ = az account set -s  $subscriptionId
+
+# Gathering the names of Azure Stack HCI clusters in the specified resource group
+$clusters = @(az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv)
+
+# Looping over the cluster names and installing the MMA extension for each
+for ($i = 0; $i -lt $clusters.Count; $i++) {
+    $currentCluster = $clusters[$i]
+    Start-Job -ScriptBlock {
+        # Installing the MMA extension with the specified parameters
+        Write-Host ("Installing MMA extension for cluster $using:currentCluster")
+		az stack-hci extension create --arc-setting-name "default" --cluster-name $using:currentCluster --extension-name "MicrosoftMonitoringAgent" --resource-group $using:resourceGroup --auto-upgrade true --publisher "Microsoft.EnterpriseCloud.Monitoring" --type "MicrosoftMonitoringAgent" --settings @$using:settings  --protected-settings @$using:protectedSetting --type-handler-version "1.10" 
+		
+    } 
+}

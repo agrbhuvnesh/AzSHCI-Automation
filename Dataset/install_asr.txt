@@ -1,0 +1,25 @@
+//This script installs asr extension on clusters.
+
+# Initialize tenantId, subscriptionId and resource groups and parameters file.
+$tenantID = ""
+$subscriptionId = ""
+$resourceGroup = ""
+$parametersFile = ".\asr-settings.json"
+
+# Logging in to Azure using the tenant ID
+az login --tenant $tenantID
+# Setting the subscription ID
+az account set -s  $subscriptionId
+
+# Gathering the names of Azure Stack HCI clusters in the specified resource group
+$clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv
+
+# Looping over the cluster names and installing the ASR extension for each
+for ($i = 0; $i -lt $clusters.Count; $i++) {
+    $currentCluster = $clusters[$i]
+    Write-Host ("Installing ASR extension for cluster $currentCluster")
+    Start-Job -ScriptBlock {
+        # Creating the ASR extension with the specified parameters
+       az stack-hci extension create --arc-setting-name "default" --cluster-name $using:currentCluster --extension-name "AzureSiteRecovery" --resource-group $using:resourceGroup --auto-upgrade true --publisher "Microsoft.SiteRecovery.Dra" --type "Windows" --settings @$using:parametersFile
+    } 
+}

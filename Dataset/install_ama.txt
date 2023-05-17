@@ -1,0 +1,31 @@
+// This script installs ama extension.
+
+# Initialize tenantID, subscriptionId and resourceGroup.
+$tenantID = ""
+$subscriptionId = ""
+$resourceGroup = ""
+$DCRFilePath = "path to DCRAssociation.json"
+
+# Logging in to Azure using the tenant ID
+az login --tenant $tenantID
+# Setting the subscription ID
+az account set -s  $subscriptionId
+
+# Creating a new data collection rule with specified parameters
+az monitor data-collection rule create --name "AMATestRule" --resource-group $resourceGroup --rule-file $DCRFilePath --description "Test DCR Rule for AMA" --location "East US"
+
+# Gathering the names and ids of Azure Stack HCI clusters
+$clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv
+$clustersId = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].id" -o tsv
+
+# Looping over the cluster names and ids and installing the AMA extension and creating the data association rule for each cluster
+for ($i = 0; $i -lt $clusters.Count; $i++) {
+    $currentCluster = $clusters[$i]
+    $currentClusterId = $clustersId[$i]
+    Write-Host ("Installing AMA extension for cluster $using:currentCluster")
+    Start-Job -ScriptBlock {
+       az stack-hci extension create --arc-setting-name "default" --cluster-name $using:currentCluster --extension-name "AzureMonitorWindowsAgent" --resource-group $using:resourceGroup --auto-upgrade true --publisher "Microsoft.Azure.Monitor" --type "AzureMonitorWindowsAgent"
+        Write-Host ("creating data association rule for $using:currentCluster")
+        az monitor data-collection rule association create --name "AMATestName$using:currentCluster" --resource $using:currentClusterId --rule-id $using:dcrRuleId 
+    } 
+}
