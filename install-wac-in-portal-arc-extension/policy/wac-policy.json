@@ -4,13 +4,6 @@
       "policyType": "Custom",
       "mode": "All",
       "description": "Deploy ARM template to install WAC extension on your Azure Stack HCI clusters if it does not exist.",
-      "metadata": {
-        "category": "Azure Arc",
-        "createdBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
-        "createdOn": "2023-04-26T08:27:32.9266847Z",
-        "updatedBy": null,
-        "updatedOn": null
-      },
       "parameters": {
         "port": {
           "type": "String",
@@ -103,16 +96,5 @@
           }
         }
       }
-    },
-    "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/af526c5e-3283-47fc-b1c0-176df94336cd",
-    "type": "Microsoft.Authorization/policyDefinitions",
-    "name": "af526c5e-3283-47fc-b1c0-176df94336cd",
-    "systemData": {
-      "createdBy": "priyjain@microsoft.com",
-      "createdByType": "User",
-      "createdAt": "2023-04-26T08:27:32.8299939Z",
-      "lastModifiedBy": "priyjain@microsoft.com",
-      "lastModifiedByType": "User",
-      "lastModifiedAt": "2023-04-26T08:27:32.8299939Z"
     }
   }

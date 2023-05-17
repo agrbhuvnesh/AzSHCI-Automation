@@ -4,13 +4,6 @@
     "policyType": "Custom",
     "mode": "All",
     "description": "Deploy ARM template to install log analytics extension on your Azure Stack HCI clusters if it does not exist.",
-    "metadata": {
-      "category": "Azure Arc",
-      "createdBy": "9adc8d29-fb23-4019-839a-b8618f123ef0",
-      "createdOn": "2023-04-19T05:57:16.4647364Z",
-      "updatedBy": "9adc8d29-fb23-4019-839a-b8618f123ef0",
-      "updatedOn": "2023-04-24T05:00:34.229651Z"
-    },
     "parameters": {
       "workspaceId": {
         "type": "String",
@@ -124,16 +117,5 @@
         }
       }
     }
-  },
-  "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/c6792e6d-a7a3-4786-bc1d-42ae05fe88ed",
-  "type": "Microsoft.Authorization/policyDefinitions",
-  "name": "c6792e6d-a7a3-4786-bc1d-42ae05fe88ed",
-  "systemData": {
-    "createdBy": "kudeepak@microsoft.com",
-    "createdByType": "User",
-    "createdAt": "2023-04-19T05:57:16.3605486Z",
-    "lastModifiedBy": "kudeepak@microsoft.com",
-    "lastModifiedByType": "User",
-    "lastModifiedAt": "2023-04-24T05:00:33.878631Z"
   }
 }

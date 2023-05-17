@@ -5,13 +5,13 @@
             "publisher": "Microsoft.SiteRecovery.Dra",
             "autoUpgradeMinorVersion": false,
             "settings": {
-                "SubscriptionId":"680d0dad-59aa-4464-adf3-b34b2b427e8c",
+                "SubscriptionId":"",
                 "Environment":"AzureCloud", 
-                "ResourceGroup":"DefaultResourceGroup-EUS", 
-                "ResourceName":"DefaultBackupVault-eastus", 
+                "ResourceGroup":"", 
+                "ResourceName":"", 
                 "Location":"East US", 
-                "SiteId": "156474f8-faa6-549a-b877-e09f931ccd06", 
-                "SiteName":"testSite", 
+                "SiteId": "xxxxxxx-xxx-xx-xxxxxx-xxx", 
+                "SiteName":"", 
                 "PrivateEndpointStateForSiteRecovery":"None"
             },
             "protectedSettings": {

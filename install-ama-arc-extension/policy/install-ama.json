@@ -4,13 +4,6 @@
     "policyType": "Custom",
     "mode": "All",
     "description": "Deploy ARM template to install ama extension on your Azure Stack HCI clusters if it does not exist. along with creating DCR rule and DCR association",
-    "metadata": {
-      "category": "Azure Arc",
-      "createdBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
-      "createdOn": "2023-04-20T09:02:52.4395687Z",
-      "updatedBy": "e416e43f-477c-498e-b0ad-b5695f9642d3",
-      "updatedOn": "2023-04-25T06:06:52.499993Z"
-    },
     "parameters": {
       "workspaceId": {
         "type": "String",
@@ -202,16 +195,5 @@
         }
       }
     }
-  },
-  "id": "/subscriptions/680d0dad-59aa-4464-adf3-b34b2b427e8c/providers/Microsoft.Authorization/policyDefinitions/08fefd37-e97e-4a72-82a8-57fabab2469d",
-  "type": "Microsoft.Authorization/policyDefinitions",
-  "name": "08fefd37-e97e-4a72-82a8-57fabab2469d",
-  "systemData": {
-    "createdBy": "priyjain@microsoft.com",
-    "createdByType": "User",
-    "createdAt": "2023-04-20T09:02:52.4122195Z",
-    "lastModifiedBy": "priyjain@microsoft.com",
-    "lastModifiedByType": "User",
-    "lastModifiedAt": "2023-04-25T06:06:52.3687276Z"
   }
 }
