@@ -1,0 +1,27 @@
+// This script enables wss diagnostics.
+
+# Set the subscription ID, resource group, and tenant ID 
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
+
+# Use a specified tenant ID to log in.
+$login = az login --tenant $tenantId
+# Change the active subscription to the specified subscription ID.
+az account set -s  $subscriptionId
+
+# Retrieve a list of all cluster IDs in the specified resource group.
+$clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].id" -o tsv
+
+# For each group of ten clusters, update the clusters with new properties.
+for ($i = 0; $i -lt $clusters.Count; ) {
+	$currentCluster = $clusters[$i..($i+10)]
+	# Print a message indicating which cluster is being updated.
+	Write-Host ("Update cluster $currentCluster")
+	# Start a job to update the current group of clusters with the new properties.
+	# This command uses the `-ScriptBlock` parameter to define a temporary script block that specifies the new properties to be applied to the clusters in the current group.
+	Start-Job -ScriptBlock {
+		az stack-hci cluster update --desired-properties diagnostic-level="Enhanced" windows-server-subscription="Enabled" --tags DoNotDelete="true" demo="true" --ids $using:currentCluster
+	}
+	i += 10
+}

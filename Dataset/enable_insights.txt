@@ -1,0 +1,32 @@
+//This script enables insights as a part of capabilities provided by Azure Stack HCI.
+# Define an empty array to be updated later with event log names.
+$EventLogNames = @()
+
+# Append the desired Windows event log names to the array
+$EventLogNames += 'microsoft-windows-sddc-management/operational'
+$EventLogNames += 'microsoft-windows-health/operational'
+
+# Define the Azure resource group and Log Analytics workspace associated with MMA extension.
+$ResourceGroupName = ''
+$WorkspaceName     = ''
+
+# Create associated data sources in the Log Analytics workspace for each named event log
+$Count = 0
+foreach ($EventLogName in $EventLogNames) {
+    $Count++
+    $null = New-AzOperationalInsightsWindowsEventDataSource `
+    -ResourceGroupName $ResourceGroupName `
+    -WorkspaceName $WorkspaceName `
+    -Name "Windows-event-$($Count)" `
+    -EventLogName $EventLogName `
+    -CollectErrors `
+    -CollectWarnings `
+    -CollectInformation
+}
+
+# Create performance counter data sources to collect other telemetry data
+New-AzOperationalInsightsWindowsPerformanceCounterDataSource -ResourceGroupName $ResourceGroupName -WorkspaceName $WorkspaceName -Name performance1 -ObjectName "Memory" -CounterName "Available Bytes" -InstanceName "*"
+New-AzOperationalInsightsWindowsPerformanceCounterDataSource -ResourceGroupName $ResourceGroupName -WorkspaceName $WorkspaceName -Name performance2 -ObjectName "Network Interface" -CounterName "Bytes Total/sec" -InstanceName "*"
+New-AzOperationalInsightsWindowsPerformanceCounterDataSource -ResourceGroupName $ResourceGroupName -WorkspaceName $WorkspaceName -Name performance3 -ObjectName "Processor" -CounterName "% Processor Time" -InstanceName "_Total"
+New-AzOperationalInsightsWindowsPerformanceCounterDataSource -ResourceGroupName $ResourceGroupName -WorkspaceName $WorkspaceName -Name performance4 -ObjectName "RDMA Activity" -CounterName "RDMA Inbound Bytes/sec" -InstanceName "*"
+New-AzOperationalInsightsWindowsPerformanceCounterDataSource -ResourceGroupName $ResourceGroupName -WorkspaceName $WorkspaceName -Name performance5 -ObjectName "RDMA Activity" -CounterName "RDMA Outbound Bytes/sec" -InstanceName "*"
