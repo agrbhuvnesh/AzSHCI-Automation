@@ -1,6 +1,6 @@
 # This script disables wss diagnostics for multiple Azure Stack HCI clusters
 
-#Code starts here
+# Code starts here
 
 # Define subscription, resourceGroup and tenantId
 $subscription = ""
