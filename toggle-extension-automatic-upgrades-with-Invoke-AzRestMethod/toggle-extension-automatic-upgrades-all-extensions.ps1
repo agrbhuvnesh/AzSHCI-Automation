@@ -2,6 +2,7 @@ $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
 $enableAutomaticUpgrade = $true
+$apiVersion = "2023-03-01"
 
 Connect-AzAccount -Subscription $subscriptionId -Tenant $tenantId
 
@@ -33,7 +34,7 @@ foreach ($extension in $extensions) {
     $updatedExtension.properties.extensionParameters.enableAutomaticUpgrade = $enableAutomaticUpgrade
 
     $payload = $updatedExtension | ConvertTo-Json -Depth 10
-    $path = $extension.ResourceId + "?api-version=2023-03-01"
+    $path = $extension.ResourceId + "?api-version=" + $apiVersion
 
     Write-Host ("Setting automatic upgrades to $enableAutomaticUpgrade on extension $extension.ResourceId")
 
