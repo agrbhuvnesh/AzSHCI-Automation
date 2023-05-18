@@ -1,4 +1,4 @@
-#This script gets Azure Stack HCI clusters in a given location
+# This script gets Azure Stack HCI clusters in a given location
 
 #Code starts here
 

@@ -1,6 +1,6 @@
 # This script installs Microsoft Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
 
-#Code starts here 
+# Code starts here 
 
 # Initialize subscriptionId, resourceGroup ,tenantId and settings
 $subscriptionId = "test-subscription"

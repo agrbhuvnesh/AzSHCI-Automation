@@ -1,4 +1,4 @@
-# This script installs Azur eMonitoring Agent extension for a single Azure Stack HCI cluster.
+# This script installs Azure Monitoring Agent extension for a single Azure Stack HCI cluster.
 
 # Code starts here
 

@@ -16,7 +16,7 @@ az account set -s  $subscriptionId
 $clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters")
 
 # Loop through each cluster
-Foreach ($cluster in $clusters) {
+foreach ($cluster in $clusters) {
     # Update the properties of the cluster
     Invoke-AzRestMethod -Method PUT -SubscriptionId $subscription -ResourceGroupName $resourceGroup -ResourceProviderName "Microsoft.AzureStackHCI" -ResourceType "clusters" -Name $cluster.Name -ApiVersion "2023-02-01" -Payload '{
         "properties": {

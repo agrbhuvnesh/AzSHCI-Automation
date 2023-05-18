@@ -1,4 +1,4 @@
-# This is the script for disabling azure hybrid benefit for an Azure Stack HCI cluster.
+# This is the script for disabling azure hybrid benefit for a single Azure Stack HCI cluster.
 
 # Code starts here
 

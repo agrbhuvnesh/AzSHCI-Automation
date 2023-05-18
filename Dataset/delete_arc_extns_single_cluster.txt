@@ -1,4 +1,4 @@
-# This script deletes all the arc extensions for an Azure Stack HCI cluster.
+# This script deletes all the arc extensions for a single Azure Stack HCI cluster.
 
 # Code starts here
 

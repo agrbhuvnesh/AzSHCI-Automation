@@ -1,6 +1,6 @@
 # This is an ARM template ARM template to install Windows Admin Center Arc Extension for multiple Azure Stack HCI Clusters.
 
-#Code starts here
+# Code starts here
 
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
