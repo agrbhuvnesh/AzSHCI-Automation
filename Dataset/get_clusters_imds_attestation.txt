@@ -1,9 +1,10 @@
-//This script gets Azure Stack HCI clusters for imds attestation.
+# This script gets Azure Stack HCI clusters for imds attestation.
+
+# Code starts here
 
 $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
-
 
 #Using AZ POWERSHELL
 
@@ -13,7 +14,3 @@ Set-AzContext
 # get clusters with IMDS attestation enabled
 Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object ReportedPropertyImdsAttestation -eq "Enabled" | Select-Object Name, Id, location
 
-#USING AZ CLI 
-
-$login = az login --tenant $tenantId
-az account set -s  $subscriptionId

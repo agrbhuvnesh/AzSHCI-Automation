@@ -1,7 +1,8 @@
-// This is a bicep template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+# This is a bicep template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+
+#Code starts here
 
 var clusterNames = ['cluster1', 'cluster2']
-
 
 resource clusterNames_name_default_MicrosoftMonitoringAgent 'Microsoft.AzureStackHCI/clusters/arcSettings/extensions@2022-12-01' = [for item in clusterNames: {
   name: '${item}/default/MicrosoftMonitoringAgent'

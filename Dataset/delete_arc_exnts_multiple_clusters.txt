@@ -1,4 +1,6 @@
-// This script deletes all the arc extensions for multiple Azure Stack HCI clusters.
+# This script deletes all the arc extensions for multiple Azure Stack HCI clusters.
+
+#Code starts here
 
 # Define subscriptionId, resourceGroup and tenantId
 $subscriptionId = ""
@@ -18,7 +20,7 @@ $clusters = az resource list --resource-group $resourceGroup --resource-type "Mi
 foreach ($currentCluster in $clusters) {
     Start-Job -ScriptBlock {
         # Use Azure CLI to delete all Arc extensions for the current cluster
-        "Deleting Arc Extensions for cluster $using:currentCluster"
+        # Deleting Arc Extensions for cluster $using:currentCluster
         az resource delete --ids (az stack-hci extension list --arc-setting-name "default" --cluster-name $using:currentCluster --resource-group $using:resourceGroup --subscription $using:subscriptionId --query "[].id" -o tsv)
     }
 }

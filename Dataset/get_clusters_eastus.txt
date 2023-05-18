@@ -1,9 +1,11 @@
-//This script gets Azure Stack HCI clusters with location EastUS
+#This script gets Azure Stack HCI clusters in a given location
+
+#Code starts here
 
 $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
-
+$location = ""
 
 #Using AZ POWERSHELL
 
@@ -11,9 +13,5 @@ Connect-AzAccount -Tenant $tenantId
 Set-AzContext
 
 # get clusters in location EastUS 
-Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object location -eq "eastus" | Select-Object Name, Id
+Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object location -eq $location | Select-Object Name, Id
 
-#USING AZ CLI 
-
-$login = az login --tenant $tenantId
-az account set -s  $subscriptionId

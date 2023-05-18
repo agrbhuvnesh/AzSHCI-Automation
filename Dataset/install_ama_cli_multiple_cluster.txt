@@ -1,4 +1,6 @@
-// This script installs ama extension for multiple Azure Stack HCI clusters.
+# This script installs Azure Monitoring Agent extension for multiple Azure Stack HCI clusters.
+
+# Code starts here
 
 # Initialize tenantID, subscriptionId and resourceGroup.
 $tenantID = ""

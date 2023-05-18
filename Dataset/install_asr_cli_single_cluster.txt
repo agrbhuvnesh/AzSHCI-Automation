@@ -1,4 +1,6 @@
-// This script installs asr extension on a single Azure Stack HCI cluster.
+# This script installs asr extension on a single Azure Stack HCI cluster.
+
+#Code starts here 
 
 # Initialize tenantId, subscriptionId and resource groups and parameters file.
 $tenantID = ""

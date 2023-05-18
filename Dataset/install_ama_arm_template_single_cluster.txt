@@ -1,0 +1,139 @@
+# This is an ARM template to install Azure Windows Monitoring Agent Arc Extension for a single Azure Stack HCI Cluster.
+
+#Code starts here
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Azure Stack HCI cluster to install the Azure Monitoring Agent Arc extension on."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "location where the resources are present"
+            }
+        },
+        "workspaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "Workspace Id of the workspace to be associated with AMA agent extension"
+            }
+        },
+        "workspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Workspace to be associated with AMA agent extension"
+            }
+        }
+    },
+    "variables": {
+        "AMAExtensionName": "AzureMonitorWindowsAgent",
+        "publisher": "Microsoft.Azure.Monitor",
+        "DataCollectionRuleName": "[concat(resourceGroup().name, '-DataCollectionRule')]"
+    },
+    "resources": [
+        # Creates DCR rule.
+        {
+            "type": "Microsoft.Insights/dataCollectionRules",
+            "apiVersion": "2021-09-01-preview",
+            "name": "[variables('DataCollectionRuleName')]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "tagName1": "tagValue1",
+                "tagName2": "tagValue2"
+            },
+            "properties": {
+                "destinations": {
+                    "logAnalytics": [
+                        {
+                            "name": "[parameters('workspaceName')]",
+                            "workspaceId": "[parameters('workspaceId')]",
+                            "workspaceResourceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourcegroups/', resourceGroup().name, '/providers/microsoft.operationalinsights/workspaces/', parameters('workspaceName'))]"
+                        }
+                    ]
+                },
+                "dataSources": {
+                    "performanceCounters": [
+                        {
+                            "counterSpecifiers": [
+                                "\\Memory(*)\\Available Bytes",
+                                "\\Network Interface(*)\\Bytes Total/sec",
+                                "\\Processor(_Total)\\% Processor Time",
+                                "\\RDMA Activity(*)\\RDMA Inbound Bytes/sec",
+                                "\\RDMA Activity(*)\\RDMA Outbound Bytes/sec"
+                            ],
+                            "name": "perfCounterDataSource",
+                            "samplingFrequencyInSeconds": "10",
+                            "streams": [
+                                "Microsoft-Perf"
+                            ]
+                        }
+                    ],
+                    "windowsEventLogs": [
+                        {
+                            "name": "eventLogsDataSource",
+                            "streams": [
+                                "Microsoft-Event"
+                            ],
+                            "xPathQueries": [
+                                "Microsoft-Windows-SDDC-Management/Operational!*[System[(EventID=3000 or EventID=3001 or EventID=3002 or EventID=3003 or EventID=3004)]]",
+                                "microsoft-windows-health/operational!*"
+                            ]
+                        }
+                    ]
+                },
+                "dataFlows": [
+                    {
+                        "destinations": [
+                            "[parameters('workspaceName')]"
+                        ],
+                        "streams": [
+                            "Microsoft-Perf"
+                        ]
+                    },
+                    {
+                        "destinations": [
+                            "[parameters('workspaceName')]"
+                        ],
+                        "streams": [
+                            "Microsoft-Event"
+                        ]
+                    }
+                ],
+                "description": "Data Collection Rule for Azure Monitoring Agent Arc extension."
+            }
+        },
+        # Install AMA extension on cluster.
+        {
+            "name": "[concat( parameters('clusterName'), '/default/AzureMonitorWindowsAgent')]",
+            "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
+            "apiVersion": "2023-02-01",
+            "properties": {
+                "extensionParameters": {
+                    "publisher": "[variables('publisher')]",
+                    "type": "[variables('AMAExtensionName')]"
+                }
+            }
+        },
+        # Associates DCR rulw with extension.
+        {
+            "type": "Microsoft.Insights/dataCollectionRuleAssociations",
+            "apiVersion": "2021-09-01-preview",
+            "name": "[concat(parameters('clusterName'), 'dataCollectionRuleAssociations')]",
+            "scope": "[format('Microsoft.AzureStackHCI/cluster', parameters('clusterName')",
+            "dependsOn": [
+                "[resourceId('Microsoft.AzureStackHCI/clusters/arcSettings/extensions', parameters('clusterNames')[copyIndex()].name, 'default', variables('AMAExtensionName'))]",
+                "[resourceId('Microsoft.Insights/dataCollectionRules', variables('DataCollectionRuleName'))]"
+            ],
+            "properties": {
+                "description": "Association of data collection rule. Deleting this association will break the data collection for this cluster",
+                "dataCollectionRuleId": "[resourceId('Microsoft.Insights/dataCollectionRules', variables('DataCollectionRuleName'))]"
+            }
+        }
+    ]
+}

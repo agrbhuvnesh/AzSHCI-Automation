@@ -1,4 +1,6 @@
-// This script installs ama extension for a single Azure Stack HCI cluster.
+# This script installs Azur eMonitoring Agent extension for a single Azure Stack HCI cluster.
+
+# Code starts here
 
 # Initialize tenantID, subscriptionId and resourceGroup.
 $tenantID = ""

@@ -1,4 +1,6 @@
-// This is bicep template to install Azure Site Recovery Arc Extension for Azure Stack HCI C
+# This is bicep template to install Azure Site Recovery Arc Extension for Azure Stack HCI C
+
+#Code starts here
 
 @description('The names of the Azure Stack HCI clusters where the extension will be installed')
 param clusterNames array

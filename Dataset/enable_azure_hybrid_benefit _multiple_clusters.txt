@@ -1,4 +1,6 @@
-//This is the script for disabling azure hybrid benefit for multiple Azure Stack HCI clusters.
+# This is the script for enabling azure hybrid benefit for multiple Azure Stack HCI clusters.
+
+# Code starts here
 
 # Define tenant, subscription and resourceGroup.
 $tenant = ""
@@ -11,7 +13,7 @@ Set-AzContext -Subscription $subscription
 # Query Azure to get a list of clusters in the specified resource group
 $clusters = (Get-AzResource -ResourceGroupName $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters").Name
 
-# For each cluster, disable the software assurance benefit by sending an API call to Azure
+# For each cluster, enable the software assurance benefit by sending an API call to Azure
 foreach ($cluster in $Clusters) {
     Invoke-AzRestMethod -Method POST `
     -SubscriptionId $subscription `
@@ -20,5 +22,5 @@ foreach ($cluster in $Clusters) {
     -ResourceType "clusters" `
     -Name ($cluster + "/extendSoftwareAssuranceBenefit") `
     -ApiVersion "2023-02-01" `
-    -Payload '{"properties": { "softwareAssuranceIntent": "Disable" }}'
+    -Payload '{"properties": { "softwareAssuranceIntent": "Enable" }}'
 }

@@ -1,0 +1,17 @@
+# This script enables wss diagnostics for a single Azure Stack HCI cluster.
+
+# Code starts here
+
+# Set the subscription ID, resource group, and tenant ID 
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
+$currentCluster =""
+
+# Use a specified tenant ID to log in.
+$login = az login --tenant $tenantId
+# Change the active subscription to the specified subscription ID.
+az account set -s  $subscriptionId
+
+# Use Azure CLI to enable wss for the current cluster
+az stack-hci cluster update --desired-properties diagnostic-level="Enhanced" windows-server-subscription="Enabled" --tags DoNotDelete="true" demo="true" --ids $using:currentCluster

@@ -1,0 +1,33 @@
+# This script disables wss diagnostics for multiple Azure Stack HCI clusters
+
+#Code starts here
+
+# Define subscription, resourceGroup and tenantId
+$subscription = ""
+$resourceGroup = ""
+$tenantId = ""
+
+# Use a specified tenant ID to log in.
+$login = az login --tenant $tenantId
+# Change the active subscription to the specified subscription ID.
+az account set -s  $subscriptionId
+
+# Get all Azure Stack HCI clusters in the specified resource group
+$clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters")
+
+# Loop through each cluster
+Foreach ($cluster in $clusters) {
+    # Update the properties of the cluster
+    Invoke-AzRestMethod -Method PUT -SubscriptionId $subscription -ResourceGroupName $resourceGroup -ResourceProviderName "Microsoft.AzureStackHCI" -ResourceType "clusters" -Name $cluster.Name -ApiVersion "2023-02-01" -Payload '{
+        "properties": {
+            "desiredProperties": {
+                "windowsServerSubscription": "Disabled",
+                "diagnosticLevel": "Basic"
+            }
+        },
+        "tags": {
+            "DoNotDelete": "true"
+        },
+         "location": "eastus2euap",
+    }'  
+}

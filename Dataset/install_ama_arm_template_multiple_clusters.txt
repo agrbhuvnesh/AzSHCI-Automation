@@ -1,4 +1,6 @@
-//This is an ARM template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+# This is an ARM template to install Azure Windows Monitoring Agent Arc Extension for multiple Azure Stack HCI Clusters.
+
+# Code starts here
 
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -35,7 +37,7 @@
         "DataCollectionRuleName": "[concat(resourceGroup().name, '-DataCollectionRule')]"
     },
     "resources": [
-        // Creates DCR rule.
+        # Creates DCR rule.
         {
             "type": "Microsoft.Insights/dataCollectionRules",
             "apiVersion": "2021-09-01-preview",
@@ -106,14 +108,13 @@
                 "description": "Data Collection Rule for Azure Monitoring Agent Arc extension."
             }
         },
-        //Install AMA extension on clusters.
+        # Install AMA extension on clusters.
         {
-            "name": "[concat( parameters('clusterNames')[copyIndex()].name, '/default/AzureMonitorWindowsAgent')]",
+            "name": "[concat( parameters('clusterName')[copyIndex()].name, '/default/AzureMonitorWindowsAgent')]",
             "type": "Microsoft.AzureStackHCI/clusters/arcSettings/extensions",
             "apiVersion": "2023-02-01",
             "properties": {
                 "extensionParameters": {
-                    "publisher": "[variables('publisher')]",
                     "type": "[variables('AMAExtensionName')]"
                 }
             },
@@ -122,7 +123,7 @@
                 "count": "[length(parameters('clusterNames'))]"
             }
         },
-        //Associates DCR rulw with extension.
+        # Associates DCR rulw with extension.
         {
             "type": "Microsoft.Insights/dataCollectionRuleAssociations",
             "apiVersion": "2021-09-01-preview",

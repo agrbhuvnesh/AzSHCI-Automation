@@ -1,4 +1,6 @@
-//This is an ARM template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+# This is a bicep template to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters.
+
+#Code starts here
 
 @description('Names of the Azure Stack HCI clusters to install the Azure Monitoring Agent Arc extension on.')
 param clusterNames array
@@ -16,7 +18,7 @@ var AMAExtensionName = 'AzureMonitorWindowsAgent'
 var publisher = 'Microsoft.Azure.Monitor'
 var DataCollectionRuleName = '${resourceGroup().name}-DataCollectionRule'
 
-// Creates DCR rule.
+# Creates DCR rule.
 resource DataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-preview' = {
   name: DataCollectionRuleName
   location: location
@@ -85,7 +87,7 @@ resource DataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
   }
 }
 
-//Install AMA extension on clusters.
+# Install AMA extension on clusters.
 resource clusterNames_name_default_AzureMonitorWindowsAgent 'Microsoft.AzureStackHCI/clusters/arcSettings/extensions@2023-02-01' = [for item in clusterNames: {
   name: '${item.name}/default/AzureMonitorWindowsAgent'
   properties: {
@@ -100,7 +102,7 @@ resource clusters 'Microsoft.AzureStackHCI/clusters@2023-02-01' existing = [for 
   name: item.name
 }]
 
-//Associates DCR rulw with extension.
+# Associates DCR rulw with extension.
 resource clusterNames_name_dataCollectionRuleAssociations 'Microsoft.Insights/dataCollectionRuleAssociations@2021-09-01-preview' = [for (item,i) in clusterNames: {
   scope: clusters[i]
   name: '${item.name}dataCollectionRuleAssociations'

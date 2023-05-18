@@ -1,4 +1,6 @@
-//This script installs Windows Admin Center Arc Extension for a single Azure Stack HCI Cluster.
+# This script installs Windows Admin Center Arc Extension for a single Azure Stack HCI Cluster.
+
+#Code starts here
 
 # Initialize subscriptionId, resourceGroup and tenantId.
 $subscriptionId = ""
