@@ -2,6 +2,7 @@ $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
 $extensionName = ""
+$apiVersion = "2023-03-01"
 
 $extensionPayload = Get-Content -Path ".\extension-payload.json" -Raw
 
@@ -21,7 +22,7 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
             -ResourceProviderName "Microsoft.AzureStackHCI" `
             -ResourceType @("clusters", "arcSettings") `
             -Name @($currentCluster, "default")  `
-            -ApiVersion "2023-03-01" `
+            -ApiVersion $apiVersion`
             -Method PUT `
             -Payload (@{"properties" = @{ "connectivityProperties" = @{ "enabled" = $true } } } | ConvertTo-Json -Depth 5)
     }
@@ -34,7 +35,7 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
         -ResourceProviderName "Microsoft.AzureStackHCI" `
         -ResourceType @("clusters", "arcSettings", "extensions") `
         -Name @($currentCluster, "default", $extensionName)  `
-        -ApiVersion "2023-03-01" `
+        -ApiVersion $apiVersion `
         -Method PUT `
         -Payload $extensionPayload `
         -AsJob
