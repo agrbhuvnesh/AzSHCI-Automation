@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterNames": {
+            "type": "array"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.AzureStackHCI/clusters",
+            "apiVersion": "2023-02-01",
+            "name": "[parameters('clusterNames')[copyIndex()].name]",
+            "location": "eastus",
+            "properties": {
+                "desiredProperties": {
+                    "windowsServerSubscription": "Enabled",
+                    "diagnosticLevel": "Basic"
+                }
+            },
+            "copy": {
+                "name": "deploymentCopy",
+                "count": "[length(parameters('clusterNames'))]"
+            }
+        }
+    ]
+}
