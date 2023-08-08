@@ -10,7 +10,7 @@ az login --tenant $tenantId
 az account set -s  $subscriptionId
 
 
-$clusters = @(az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv)
+$clusters = @(az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv)
 
 foreach ($currentCluster in $clusters) {
     Start-Job -ScriptBlock {
