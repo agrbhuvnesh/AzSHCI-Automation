@@ -10,10 +10,8 @@ Update Variables in Scripts:
 		"workspaceId": "",
 		"workspaceResourceId": "" 
 		destinations: ""  <use the same name as given as step1>
-	2. update 4 variables in install_ama_extn
+	2. update 4 variables in install_mma_extn
 		$subscriptionId = "test-subscription"
 		$resourceGroup = "test-rg"
 		$DCRFilePath = "DCRAssociation.json" #File Path to DCR json file
 		$tenantId = ""
-
-

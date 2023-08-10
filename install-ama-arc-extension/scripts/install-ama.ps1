@@ -1,17 +1,28 @@
-$tenantID = ""
 $subscriptionId = ""
 $resourceGroup = ""
+$tenantId = ""
 $DCRFilePath = "path to DCRAssociation.json"
 $AMATestRuleName = "AMATestRule"
 
-#Using CLI 
+ 
+
+ 
+
+# Using CLI
+
+ 
 
 az login --tenant $tenantID
 az account set -s  $subscriptionId
 az monitor data-collection rule create --name $AMATestRuleName --resource-group $resourceGroup --rule-file $DCRFilePath --description "Test DCR Rule for AMA" --location "East US"
 
+ 
+
+
 $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv
 $clustersId = az stack-hci cluster list --resource-group $resourceGroup --query "[].id" -o tsv
+
+ 
 
 for ($i = 0; $i -lt $clusters.Count; $i++) {
     $currentCluster = $clusters[$i]
@@ -27,6 +38,10 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
                             --publisher "Microsoft.Azure.Monitor" `
                             --type "AzureMonitorWindowsAgent"
 
+ 
+
+ 
+
         Write-Host ("creating data association rule for $using:currentCluster")
         az monitor data-collection rule association create `
                                 --name "AMATestName$using:currentCluster" `
@@ -35,34 +50,80 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
     } 
 }
 
-#Using Powershell
+ 
 
-Connect-AzAccount -Tenant $tenantID  
-set-AzContext -Subscription $subscriptionId
+ 
 
-New-AzDataCollectionRule -RuleName $AMATestRuleName -ResourceGroupName $resourceGroup -RuleFile $DCRFilePath -Description "Test DCR Rule for AMA" -Location "East US"
+# Using Powershell
 
-$clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
-$clusterIds = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Id
+ 
 
-for ($i = 0; $i -lt $clusters.Count; $i++) {
-    $currentCluster = $clusters[$i]
-    $currentClusterId = $clusterIds[$i]
-    Write-Host ("Installing AMA extension for cluster $using:currentCluster")
-    Start-Job -ScriptBlock {
+# Connect to Azure
+Connect-AzAccount -Tenant $tenantID
+Set-AzContext -Subscription $subscriptionId
+
+ 
+
+ 
+
+# Get the list of clusters
+$clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup)
+
+ 
+
+
+# Create the Data Collection Rule
+
+ 
+
+$rule = New-AzDataCollectionRule -RuleName $AMATestRuleName -ResourceGroupName $resourceGroup -RuleFile $DCRFilePath -Description "Test DCR Rule for AMA" -Location "East US"
+$dcrRuleId = $rule.Id
+
+ 
+
+ 
+
+# Loop through each cluster
+foreach ($cluster in $clusters) {
+    $currentCluster = $cluster.Name
+    $currentClusterId = $cluster.Id
+
+ 
+
+ 
+
+    
+    $scriptBlock = {
+        param (
+            $clusterName,
+            $clusterId,
+            $resourceGroup,
+            $dcrId
+        )
+        Write-Host ("Installing AMA extension for cluster $clusterName")
+        # Install the AMA extension
         New-AzStackHciExtension `
-                -ClusterName $using:currentCluster `
-                -ResourceGroupName $using:resourceGroup `
-                -ArcSettingName "default" `
-                -ExtensionName "AzureMonitorWindowsAgent" `
-                -AutoUpgrade $true `
-                -Publisher "Microsoft.Azure.Monitor" `
-                -Type "AzureMonitorWindowsAgent"
+            -ClusterName $clusterName `
+            -ResourceGroupName $resourceGroup `
+            -ArcSettingName "default" `
+            -Name "AzureMonitorWindowsAgent" `
+            -ExtensionParameterPublisher "Microsoft.Azure.Monitor" `
+            -ExtensionParameterType "AzureMonitorWindowsAgent"
 
-        Write-Host ("creating data association rule for $using:currentCluster")
+ 
+
+ 
+
+        Write-Host ("creating data association rule for $clusterName")
         New-AzDataCollectionRuleAssociation `
-                                    -Name "AMATestName$using:currentCluster" `
-                                    -Resource $using:currentClusterId `
-                                    -RuleId $using:dcrRuleId
-    } 
+            -AssociationName "AMATestName$clusterName" `
+            -TargetResourceId $clusterId `
+            -RuleId $dcrId
+    }
+
+ 
+
+ 
+
+    Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $currentCluster, $currentClusterId, $resourceGroup, $dcrRuleId
 }

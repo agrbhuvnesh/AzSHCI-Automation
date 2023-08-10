@@ -1,8 +1,8 @@
 $EventLogNames       = @()
 $EventLogNames      += 'microsoft-windows-sddc-management/operational'
 $EventLogNames      += 'microsoft-windows-health/operational'
-$ResourceGroupName   = ''
-$WorkspaceName       = ''
+$ResourceGroupName   = ""
+$WorkspaceName       = ""
 
 $Count = 0
 foreach ($EventLogName in $EventLogNames) {

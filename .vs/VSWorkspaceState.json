@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\delete-all-arc-extensions",
+    "\\delete-clusters",
+    "\\enable-azure-hybrid-benfit-intent",
+    "\\enable-azure-hybrid-benfit-intent\\scripts",
+    "\\enable-wss-diagnostics",
+    "\\install-ama-arc-extension",
+    "\\install-mma-arc-extension",
+    "\\install-wac-in-portal-arc-extension",
+    "\\install-wac-in-portal-arc-extension\\arm template and bicep"
+  ],
+  "PreviewInSolutionExplorer": false
+}

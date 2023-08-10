@@ -1,6 +1,6 @@
-$tenant = ""
 $subscription = ""
 $resourceGroup = ""
+$tenant = ""
 
 
 ##Powershell 
@@ -49,3 +49,4 @@ az stack-hci cluster extend-software-assurance-benefit `
                                     --name $clusterName `
                                     --resource-group $resourceGroup `
                                     --software-assurance-intent enable
+                                    

@@ -2,17 +2,30 @@ $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
 
-#Using CLI
+ 
+
+ 
+
+# Using CLI
+
+ 
+
 $login = az login --tenant $tenantId
 az account set -s  $subscriptionId
 
+ 
+
 $clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].id" -o tsv
+
+ 
 
 ## Update Diagnostic Level as "Enhanced" and setting WSS as "Enabled" for multiple clusters with tags
 az stack-hci cluster update `
 				--desired-properties "{diagnosticLevel:Basic,windowsServerSubscription:Enabled}" `
 				--tags tag1="tag1" tag2="tag2" `
 				--ids $clusters
+
+ 
 
 ## Update Diagnostic Level as "Enhanced" and setting WSS as "Enabled" for a particular cluster with tags 
 $clusterName = ""
@@ -22,13 +35,25 @@ az stack-hci cluster update `
 				--name $clusterName `
 				--resource-group $resourceGroup
 
-#Using Powwershell
+ 
+
+# Using Powershell
+
+ 
+
 Connect-AzAccount -Tenant $tenantId
 Set-AzContext -Subscription $subscriptionId
 
+ 
+
 $clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
 
+ 
+
 ## Update Diagnostic Level as "Enhanced" and setting WSS as "Enabled" for multiple clusters with tags
+
+ 
+
 foreach($currentCluster in $clusters) {
 	Start-Job -ScriptBlock {
 		"Updating cluster $using:currentCluster"
@@ -40,7 +65,12 @@ foreach($currentCluster in $clusters) {
 	}
 }
 
-#update Diagnostic Level as "Enhanced" and setting WSS as "Enabled" for a particular cluster with tags
+ 
+
+# Update Diagnostic Level as "Enhanced" and setting WSS as "Enabled" for a particular cluster with tags
+
+ 
+
 $clusterName = ""
 Update-AzStackHciCluster -Name $clusterName `
 						-ResourceGroupName $resourceGroup `
