@@ -2,6 +2,7 @@ $subscription = ""
 $resourceGroup = ""
 $tenant = ""
 
+
  
 
 # Powershell

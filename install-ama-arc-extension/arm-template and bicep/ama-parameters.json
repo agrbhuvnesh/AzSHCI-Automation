@@ -5,13 +5,7 @@
 		"clusterNames": {
 			"value": [
 				{
-					"name": "test-cluster"
-				},
-				{
-					"name": "test-cluster-2"
-				},
-				{
-					"name": "test-cluster-3"
+					"name": ""
 				}
 			]
 		},
@@ -19,10 +13,10 @@
 			"value": "East US"
 		},
 		"workspaceId": {
-			"value": "xxxxxx-xxxx-xxxx-xxx-xxxxxxxxxx"
+			"value": ""
 		},
 		"workspaceName": {
-			"value": "test-workspace"
+			"value": ""
 		}
 	}
 }

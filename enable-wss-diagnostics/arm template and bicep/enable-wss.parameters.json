@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterNames": {
-			"value": [
-                {
-                    "name": "test-clus-1"
-                },
-                {
-                    "name": "test-clus-2"
-                }
-            ]
+          "value": [
+            {
+              "name": ""
+            },
+            {
+              "name": ""
+            }
+          ]
 		}
     }
 }

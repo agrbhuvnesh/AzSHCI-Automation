@@ -26,8 +26,7 @@ Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit `
                                     -ClusterName $clusterName `
                                     -ResourceGroupName $resourceGroup `
                                     -SoftwareAssuranceIntent "Enable"
-
-##CLI 
+#CLI 
 
 az login --tenant $tenant
 az account set --subscription $subscription
@@ -49,4 +48,5 @@ az stack-hci cluster extend-software-assurance-benefit `
                                     --name $clusterName `
                                     --resource-group $resourceGroup `
                                     --software-assurance-intent enable
-                                    
+    
+ 
