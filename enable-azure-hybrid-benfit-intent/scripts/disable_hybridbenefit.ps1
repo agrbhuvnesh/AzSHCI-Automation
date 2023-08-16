@@ -19,10 +19,10 @@ $clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "M
  
 
 Foreach ($cluster in $Clusters) {
-    Start-Job -ScriptBlock {
-        "Disabling Azure Hybrid Benefit for cluster $using:cluster"
-        Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit -ClusterName $using:cluster -ResourceGroupName $using:resourceGroup -SoftwareAssuranceIntent "Disable"
-    }
+   
+        "Disabling Azure Hybrid Benefit for cluster $cluster"
+        Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit -ClusterName $cluster -ResourceGroupName $resourceGroup -SoftwareAssuranceIntent "Disable"
+    
 }
 
  

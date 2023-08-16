@@ -11,7 +11,9 @@ Pre-requisites:
 
 Fill up the values in ama-parameters.json: 
 
-1. cluster-names: array of the clusters to install AMA on
+1. cluster-names: array of the clusters to install AMA on clusters.
+2. location: location where to create the DCR rule.
+3. Workspace-id, workspace-name: details of the workspace created above
 
 
 

@@ -27,13 +27,13 @@ $clustersId = az stack-hci cluster list --resource-group $resourceGroup --query 
 for ($i = 0; $i -lt $clusters.Count; $i++) {
     $currentCluster = $clusters[$i]
     $currentClusterId = $clustersId[$i]
-    Write-Host ("Installing AMA extension for cluster $using:currentCluster")
-    Start-Job -ScriptBlock {
+    Write-Host ("Installing AMA extension for cluster $currentCluster")
+   {
         az stack-hci extension create `
                             --arc-setting-name "default" `
-                            --cluster-name $using:currentCluster `
+                            --cluster-name $currentCluster `
                             --extension-name "AzureMonitorWindowsAgent" `
-                            --resource-group $using:resourceGroup `
+                            --resource-group $resourceGroup `
                             --auto-upgrade true `
                             --publisher "Microsoft.Azure.Monitor" `
                             --type "AzureMonitorWindowsAgent"
@@ -42,11 +42,11 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
 
  
 
-        Write-Host ("creating data association rule for $using:currentCluster")
+        Write-Host ("creating data association rule for $currentCluster")
         az monitor data-collection rule association create `
-                                --name "AMATestName$using:currentCluster" `
-                                --resource $using:currentClusterId `
-                                --rule-id $using:dcrRuleId 
+                                --name "AMATestName$currentCluster" `
+                                --resource $currentClusterId `
+                                --rule-id $dcrRuleId 
     } 
 }
 

@@ -4,13 +4,13 @@ $tenantId = ""
 
  
 
-$settingsPath=@{
+$settingsConfig=@{
     "port"= "6516"
 }
 
  
 
-$connectivityPath=@{
+$connectivityConfig=@{
     "enabled"= "true"
 }
 
@@ -34,17 +34,17 @@ $clusters = @(az stack-hci cluster list --resource-group $resourceGroup --query 
  
 
 foreach ($currentCluster in $clusters) {
-    Start-Job -ScriptBlock {
+ 
         "Enabling Connectivity for cluster $using:currentCluster"
 
  
 
-        az stack-hci arc-setting update --resource-group $using:resourceGroup --cluster-name $using:currentCluster --name "default" --connectivity-properties "{enabled:true}"
+        az stack-hci arc-setting update --resource-group $resourceGroup --cluster-name $currentCluster --name "default" --connectivity-properties "{enabled:true}"
 
-	"Installing WAC extension for cluster $using:currentCluster"
+	"Installing WAC extension for cluster $currentCluster"
 
-	az stack-hci extension create --arc-setting-name "default" --cluster-name $using:currentCluster --extension-name "AdminCenter" --resource-group $using:resourceGroup --publisher "Microsoft.AdminCenter" --type "AdminCenter" --settings "{workspaceId:<workspaceid>}" 
-    }
+	az stack-hci extension create --arc-setting-name "default" --cluster-name $currentCluster --extension-name "AdminCenter" --resource-group $resourceGroup --publisher "Microsoft.AdminCenter" --type "AdminCenter" --settings "{workspaceId:<workspaceid>}" 
+    
 }
 
  
@@ -65,5 +65,5 @@ Foreach ($cluster in $Clusters) {
 
  
 
-    New-AzStackHciExtension -ArcSettingName "default" -ClusterName $cluster -ResourceGroupName $resourceGroup -Name "AdminCenter" -ExtensionParameterPublisher "Microsoft.AdminCenter" -ExtensionParameterType "AdminCenter" -ExtensionParameterSetting $settingsPath
+    New-AzStackHciExtension -ArcSettingName "default" -ClusterName $cluster -ResourceGroupName $resourceGroup -Name "AdminCenter" -ExtensionParameterPublisher "Microsoft.AdminCenter" -ExtensionParameterType "AdminCenter" -ExtensionParameterSetting $settingsConfig
     }

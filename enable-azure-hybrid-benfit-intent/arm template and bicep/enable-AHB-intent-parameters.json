@@ -4,9 +4,12 @@
     "parameters": {
         "clusterNames": {
             "value": [
-                {
-                    "name": ""
-                }
+              {
+                "name": "test-clus-1"
+              },
+              {
+                "name":  "test-clus-2"
+              }
             ]
         }
     }

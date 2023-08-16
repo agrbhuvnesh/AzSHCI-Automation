@@ -1,6 +1,6 @@
-$subscriptionId = "680d0dad-59aa-4464-adf3-b34b2b427e8c"
-$resourceGroup = "priytestclus-rg"
-$tenantId = "c76bd4d1-bea3-45ea-be1b-4a745a675d07"
+$subscriptionId = ""
+$resourceGroup = ""
+$tenantId = ""
 $apiVersion = "2023-03-01"
 
 Connect-AzAccount -Subscription $subscriptionId -Tenant $tenantId

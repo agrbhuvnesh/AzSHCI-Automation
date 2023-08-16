@@ -55,14 +55,14 @@ $clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
  
 
 foreach($currentCluster in $clusters) {
-	Start-Job -ScriptBlock {
-		"Updating cluster $using:currentCluster"
-		Update-AzStackHciCluster -Name $using:currentCluster `
-								-ResourceGroupName $using:resourceGroup `
+	
+		"Updating cluster $currentCluster"
+		Update-AzStackHciCluster -Name $currentCluster `
+								-ResourceGroupName $resourceGroup `
 								-DesiredPropertyDiagnosticLevel "Enhanced" `
 								-DesiredPropertyWindowsServerSubscription "Enabled" `
 								-Tag @{"tag1"="tag1";"tag2"="tag2"}
-	}
+	
 }
 
  

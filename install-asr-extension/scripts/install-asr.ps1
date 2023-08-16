@@ -25,9 +25,9 @@ $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[
 for ($i = 0; $i -lt $clusters.Count; $i++) {
     $currentCluster = $clusters[$i]
     Write-Host ("Installing ASR extension for cluster $currentCluster")
-    Start-Job -ScriptBlock {
-       az stack-hci extension create --arc-setting-name "default" --cluster-name $using:currentCluster --extension-name "AzureSiteRecovery" --resource-group $using:resourceGroup --auto-upgrade true --publisher "Microsoft.SiteRecovery.Dra" --type "Windows" --settings-file $using:parametersFile
-    } 
+  
+       az stack-hci extension create --arc-setting-name "default" --cluster-name $currentCluster --extension-name "AzureSiteRecovery" --resource-group $resourceGroup --auto-upgrade true --publisher "Microsoft.SiteRecovery.Dra" --type "Windows" --settings-file $parametersFile
+    
 }
 
  
@@ -48,6 +48,6 @@ $clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
 foreach($cluster in $clusters) {
     Write-Host ("Installing ASR extension for cluster $cluster")
     Start-Job -ScriptBlock {
-        New-AzStackHciExtension -ClusterName $using:cluster -ResourceGroupName $using:resourceGroup -ArcSettingName "default" -Name "AzureSiteRecovery" -ExtensionParameterPublisher "Microsoft.SiteRecovery.Dra" -ExtensionParameterType "Windows" -ExtensionParameterSetting $using:extensionParameters.protectedSettings
+        New-AzStackHciExtension -ClusterName $cluster -ResourceGroupName $resourceGroup -ArcSettingName "default" -Name "AzureSiteRecovery" -ExtensionParameterPublisher "Microsoft.SiteRecovery.Dra" -ExtensionParameterType "Windows" -ExtensionParameterSetting $extensionParameters.protectedSettings
     }
 }

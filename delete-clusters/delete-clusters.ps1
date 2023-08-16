@@ -60,10 +60,10 @@ $clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
  
 
 foreach ($cluster in $clusters) {
-    Start-Job -ScriptBlock {
-        "Deleting cluster $using:cluster"
-        Remove-AzStackHciCluster -Name $using:cluster -ResourceGroupName $using:resourceGroup
-    }
+    
+        "Deleting cluster $cluster"
+        Remove-AzStackHciCluster -Name $cluster -ResourceGroupName $resourceGroup
+    
 }
 
  

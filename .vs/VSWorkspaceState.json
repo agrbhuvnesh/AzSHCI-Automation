@@ -1,16 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\enable-azure-hybrid-benfit-intent",
-    "\\enable-wss-diagnostics",
-    "\\install-ama-arc-extension\\arm-template and bicep",
-    "\\install-asr-extension",
-    "\\install-asr-extension\\arm-template and bicep",
-    "\\install-mma-arc-extension",
-    "\\install-mma-arc-extension\\arm template and bicep",
-    "\\install-wac-in-portal-arc-extension\\arm template and bicep",
-    "\\install-wac-in-portal-arc-extension\\policy"
+    "\\install-asr-extension"
   ],
-  "SelectedNode": "\\install-mma-arc-extension\\script",
   "PreviewInSolutionExplorer": false
 }
