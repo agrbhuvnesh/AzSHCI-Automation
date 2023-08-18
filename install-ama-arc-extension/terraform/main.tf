@@ -46,7 +46,7 @@ variable "resourceGroupName" {
 locals {
   AMAExtensionName       = "AzureMonitorWindowsAgent"
   publisher              = "Microsoft.Azure.Monitor"
-  DataCollectionRuleName = "${var.resourceGroupName}-DataCollectionRule"
+  dataCollectionRuleName = "${var.resourceGroupName}-DataCollectionRule"
 }
 
 
@@ -65,7 +65,7 @@ data "azapi_resource" "cluster" {
 
 # Data Collection Rule
 resource "azurerm_monitor_data_collection_rule" "data_collection_rule" {
-  name                = local.DataCollectionRuleName
+  name                = local.dataCollectionRuleName
   location            = var.location
   resource_group_name = var.resourceGroupName
   tags = {
