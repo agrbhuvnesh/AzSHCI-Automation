@@ -15,5 +15,3 @@ Update Variables in Scripts:
 		$resourceGroup = "test-rg"
 		$DCRFilePath = "DCRAssociation.json" #File Path to DCR json file
 		$tenantId = ""
-
-

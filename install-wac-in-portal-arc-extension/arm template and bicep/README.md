@@ -14,14 +14,14 @@ Fill up the values in wac-parameters.json:
 
 To run the ARM-template: 
 
-New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group> -TemplateFile .\wac_template.json -TemplateParameterFile .\wac-parameters.json
+New-AzResourceGroupDeployment -Name \<deployment-name> -ResourceGroupName \<resource-group> -TemplateFile .\wac_template.json -TemplateParameterFile .\wac_parameters.json
 
 deployment-name : any unique name for your deployment 
 resource-group: resource group to target which contains the resources
 
 To run the bicep: 
 
-New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group> -TemplateFile .\wac_template.bicep -TemplateParameterFile .\wac-parameters.json
+New-AzResourceGroupDeployment -Name \<deployment-name> -ResourceGroupName \<resource-group> -TemplateFile .\wac_template.bicep -TemplateParameterFile .\wac_parameters.json
 
 deployment-name : any unique name for your deployment 
 resource-group: resource group to target which contains the resources

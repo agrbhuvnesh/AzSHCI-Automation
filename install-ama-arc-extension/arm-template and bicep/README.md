@@ -11,21 +11,22 @@ Pre-requisites:
 
 Fill up the values in ama-parameters.json: 
 
-1. cluster-names: array of the clusters to install AMA on 
-2. location: location where to create the DCR rule 
+1. cluster-names: array of the clusters to install AMA on clusters.
+2. location: location where to create the DCR rule.
 3. Workspace-id, workspace-name: details of the workspace created above
+
 
 
 To run the ARM-template: 
 
-New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group> -TemplateFile .\install-ama.json -TemplateParameterFile .\ama-parameters.json
+New-AzResourceGroupDeployment -Name \<deployment-name> -ResourceGroupName \<resource-group> -TemplateFile .\install-ama.json -TemplateParameterFile .\ama-parameters.json
 
 deployment-name : any unique name for your deployment 
 resource-group: resource group to target which contains the resources
 
 To run the bicep: 
 
-New-AzResourceGroupDeployment -Name <deployment-name> -ResourceGroupName <resource-group> -TemplateFile .\install-ama.bicep -TemplateParameterFile .\ama-parameters.json
+New-AzResourceGroupDeployment -Name \<deployment-name> -ResourceGroupName \<resource-group> -TemplateFile .\install-ama.bicep -TemplateParameterFile .\ama-parameters.json
 
 deployment-name : any unique name for your deployment 
 resource-group: resource group to target which contains the resources

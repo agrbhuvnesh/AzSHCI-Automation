@@ -1,6 +1,6 @@
-$tenant = ""
 $subscription = ""
 $resourceGroup = ""
+$tenant = ""
 
 
 ##Powershell 
@@ -10,13 +10,12 @@ $clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "M
 
 #Enable Hybrid benefit for all clusters in a resource group
 Foreach ($cluster in $Clusters) {
-    Start-Job -ScriptBlock {
-        "Enabling Azure Hybrid Benefit for cluster $using:cluster"
+    
+        "Enabling Azure Hybrid Benefit for cluster $cluster"
         Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit `
-                                    -ClusterName $using:cluster `
-                                    -ResourceGroupName $using:resourceGroup `
+                                    -ClusterName $cluster `
+                                    -ResourceGroupName $resourceGroup `
                                     -SoftwareAssuranceIntent "Enable"
-    }
 }
 
 #Enable Hybrid benefit for a particular cluster in a resource group
@@ -26,8 +25,7 @@ Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit `
                                     -ClusterName $clusterName `
                                     -ResourceGroupName $resourceGroup `
                                     -SoftwareAssuranceIntent "Enable"
-
-##CLI 
+#CLI 
 
 az login --tenant $tenant
 az account set --subscription $subscription
@@ -46,6 +44,8 @@ az stack-hci cluster extend-software-assurance-benefit `
 $clusterName = ""
 
 az stack-hci cluster extend-software-assurance-benefit `
-                                    --name $clusterName `
+                                    --cluster-name $clusterName `
                                     --resource-group $resourceGroup `
                                     --software-assurance-intent enable
+    
+ 

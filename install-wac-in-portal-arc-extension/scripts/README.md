@@ -9,5 +9,5 @@ You need to pass below params:
 $subscriptionId = ""
 $resourceGroup =  ""
 $tenantId = ""
-$settingsPath = "path to port-wac.json"
-$connectivityPath = "path to connectivity.json"
+$settingsConfig = "config parameters for setting "
+$connectivityConfig = "config parameters for connectivity"

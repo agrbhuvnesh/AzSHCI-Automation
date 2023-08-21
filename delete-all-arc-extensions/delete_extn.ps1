@@ -3,39 +3,45 @@ $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
 
+
 ## USING CLI
 $login = az login --tenant $tenantId
 az account set -s  $subscriptionId
 
 $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv
 
+
+
+
 #Delete all extensions for all the clusters in the resource group
 
 foreach ($currentCluster in $clusters) {
-    Start-Job -ScriptBlock {
-        "Deleting Arc Extensions for cluster $using:currentCluster"
+    
+        "Deleting Arc Extensions for cluster $currentCluster"
 		az resource delete  --ids (az stack-hci extension list `
                                     --arc-setting-name "default" `
-                                    --cluster-name $using:currentCluster `
-                                    --resource-group $using:resourceGroup `
-                                    --subscription $using:subscriptionId `
+                                    --cluster-name $currentCluster `
+                                    --resource-group $resourceGroup `
+                                    --subscription $subscriptionId `
                                     --query "[].id" -o tsv) 
-	}
+	
 }
+
 
 #To delete a particular extension for all the clusters in the resource-group 
 $extensionName = ""
 
 foreach ($currentCluster in $clusters) {
-    Start-Job -ScriptBlock {
+    
         "Deleting Arc Extension $using:extensionName for cluster $using:currentCluster"
         az stack-hci extension delete `
             --arc-setting-name "default" `
-            --name "${using:extensionName}" `
-            --cluster-name "${using:clusterName}" `
-            --resource-group "${using:resourceGroup}"
-	}
+            --name "${extensionName}" `
+            --cluster-name "${currentCluster}" `
+            --resource-group "${resourceGroup}"
 }
+
+
 
 ##USING POWERSHELL
 
@@ -48,8 +54,8 @@ $clusterName = ""
 $extensions = (Get-AzStackHciExtension -ClusterName $clusterName -ResourceGroupName $resourceGroup -ArcSettingName "default").Name
 
 foreach ($extension in $extensions) {
-    Start-Job -ScriptBlock {
-        "Deleting Arc Extension $using:extensionName for cluster $using:currentCluster"
+     {
+        "Deleting Arc Extension $using:extensionName for cluster $currentCluster"
         Remove-AzStackHciExtension -ClusterName $using:clusterName -ResourceGroupName $using:resourceGroup -ArcSettingName "default" -Name $using:extension
     }
 }
