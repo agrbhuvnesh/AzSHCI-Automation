@@ -41,14 +41,9 @@ variable "resourceGroupName" {
   description = "Name of the resource group where the log analytics workspace exists."
 }
 
-variable "azStackHCIClusterApiVersion" {
+variable "azStackHCIApiVersion" {
   type        = string
   description = "The Azure Stack HCI Cluster api version to be used with azapi_resource"
-}
-
-variable "azStackHCIClusterExtensionApiVersion" {
-  type        = string
-  description = "The Azure Stack HCI Cluster extension api version to be used with azapi_resource"
 }
 
 variable "azStackHCIDataCollectionRuleAssociationApiVersion" {
@@ -72,7 +67,7 @@ data "azurerm_resource_group" "resourceGroup" {
 # Existing Azure Stack HCI Clusters
 data "azapi_resource" "cluster" {
   for_each    = toset(var.clusterResourceIds)
-  type        = "Microsoft.AzureStackHCI/clusters@${var.azStackHCIClusterApiVersion}"
+  type        = "Microsoft.AzureStackHCI/clusters@${var.azStackHCIApiVersion}"
   resource_id = each.value
 }
 
@@ -136,7 +131,7 @@ resource "azurerm_monitor_data_collection_rule" "data_collection_rule" {
 # Azure Stack HCI cluster extensions
 resource "azapi_resource" "azurestackhci_cluster_extension" {
   for_each  = toset(var.clusterResourceIds)
-  type      = "microsoft.azurestackhci/clusters/arcsettings/extensions@${var.azStackHCIClusterExtensionApiVersion}"
+  type      = "microsoft.azurestackhci/clusters/arcsettings/extensions@${var.azStackHCIApiVersion}"
   name      = "AzureMonitorWindowsAgent"
   parent_id = "${data.azapi_resource.cluster[each.key].id}/arcSettings/default"
   body = jsonencode({
