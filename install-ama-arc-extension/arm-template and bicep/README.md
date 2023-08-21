@@ -16,7 +16,6 @@ Fill up the values in ama-parameters.json:
 3. Workspace-id, workspace-name: details of the workspace created above
 
 
-
 To run the ARM-template: 
 
 New-AzResourceGroupDeployment -Name \<deployment-name> -ResourceGroupName \<resource-group> -TemplateFile .\install-ama.json -TemplateParameterFile .\ama-parameters.json

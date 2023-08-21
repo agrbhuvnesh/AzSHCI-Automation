@@ -79,31 +79,17 @@ $clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup)
 $rule = New-AzDataCollectionRule -RuleName $AMATestRuleName -ResourceGroupName $resourceGroup -RuleFile $DCRFilePath -Description "Test DCR Rule for AMA" -Location "East US"
 $dcrRuleId = $rule.Id
 
- 
-
- 
+  
 
 # Loop through each cluster
 foreach ($cluster in $clusters) {
     $currentCluster = $cluster.Name
     $currentClusterId = $cluster.Id
 
- 
-
- 
-
-    
-    $scriptBlock = {
-        param (
-            $clusterName,
-            $clusterId,
-            $resourceGroup,
-            $dcrId
-        )
-        Write-Host ("Installing AMA extension for cluster $clusterName")
+        Write-Host ("Installing AMA extension for cluster $currentCluster")
         # Install the AMA extension
         New-AzStackHciExtension `
-            -ClusterName $clusterName `
+            -ClusterName $currentCluster `
             -ResourceGroupName $resourceGroup `
             -ArcSettingName "default" `
             -Name "AzureMonitorWindowsAgent" `
@@ -111,19 +97,10 @@ foreach ($cluster in $clusters) {
             -ExtensionParameterType "AzureMonitorWindowsAgent"
 
  
-
- 
-
-        Write-Host ("creating data association rule for $clusterName")
+        Write-Host ("creating data association rule for $currentCluster")
         New-AzDataCollectionRuleAssociation `
-            -AssociationName "AMATestName$clusterName" `
-            -TargetResourceId $clusterId `
-            -RuleId $dcrId
-    }
+            -AssociationName "AMATestName$currentCluster" `
+            -TargetResourceId $currentClusterId `
+            -RuleId $dcrRuleId
 
- 
-
- 
-
-    Invoke-Command -ScriptBlock $scriptBlock -ArgumentList $currentCluster, $currentClusterId, $resourceGroup, $dcrRuleId
 }
