@@ -41,6 +41,20 @@ variable "resourceGroupName" {
   description = "Name of the resource group where the log analytics workspace exists."
 }
 
+variable "azStackHCIClusterApiVersion" {
+  type        = string
+  description = "The Azure Stack HCI Cluster api version to be used with azapi_resource"
+}
+
+variable "azStackHCIClusterExtensionApiVersion" {
+  type        = string
+  description = "The Azure Stack HCI Cluster extension api version to be used with azapi_resource"
+}
+
+variable "azStackHCIDataCollectionRuleAssociationApiVersion" {
+  type        = string
+  description = "The Azure Stack HCI Cluster data collection rule association api version to be used with azapi_resource"
+}
 
 # locals
 locals {
@@ -58,7 +72,7 @@ data "azurerm_resource_group" "resourceGroup" {
 # Existing Azure Stack HCI Clusters
 data "azapi_resource" "cluster" {
   for_each    = toset(var.clusterResourceIds)
-  type        = "Microsoft.AzureStackHCI/clusters@2022-12-01"
+  type        = "Microsoft.AzureStackHCI/clusters@${var.azStackHCIClusterApiVersion}"
   resource_id = each.value
 }
 
@@ -122,7 +136,7 @@ resource "azurerm_monitor_data_collection_rule" "data_collection_rule" {
 # Azure Stack HCI cluster extensions
 resource "azapi_resource" "azurestackhci_cluster_extension" {
   for_each  = toset(var.clusterResourceIds)
-  type      = "microsoft.azurestackhci/clusters/arcsettings/extensions@2022-12-01"
+  type      = "microsoft.azurestackhci/clusters/arcsettings/extensions@${var.azStackHCIClusterExtensionApiVersion}"
   name      = "AzureMonitorWindowsAgent"
   parent_id = "${data.azapi_resource.cluster[each.key].id}/arcSettings/default"
   body = jsonencode({
@@ -139,7 +153,7 @@ resource "azapi_resource" "azurestackhci_cluster_extension" {
 # Data Collection Rule Association
 resource "azapi_resource" "data_collection_rule_associations" {
   for_each  = toset(var.clusterResourceIds)
-  type      = "Microsoft.Insights/dataCollectionRuleAssociations@2021-09-01-preview"
+  type      = "Microsoft.Insights/dataCollectionRuleAssociations@${var.azStackHCIDataCollectionRuleAssociationApiVersion}"
   name      = "dcrassociation"
   parent_id = data.azapi_resource.cluster[each.key].id
   body = jsonencode({
