@@ -1,10 +1,11 @@
+#This scripts configures insights for a cluster by creating DCR, installing AMA and eassociating DCR.
+
+
 $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
 $DCRFilePath = "path to DCRAssociation.json"
 $AMATestRuleName = "AMATestRule"
-
- 
 
  
 
@@ -20,15 +21,13 @@ az monitor data-collection rule create --name $AMATestRuleName --resource-group 
 
 
 $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv
-$clustersId = az stack-hci cluster list --resource-group $resourceGroup --query "[].id" -o tsv
 
  
 
-for ($i = 0; $i -lt $clusters.Count; $i++) {
-    $currentCluster = $clusters[$i]
-    $currentClusterId = $clustersId[$i]
+foreach ($cluster in $clusters) {
+    $currentCluster = $cluster
+    $currentClusterId = "/subscriptions/$subscriptionId/resourceGroups/$resourceGroup/providers/Microsoft.AzureStackHCI/clusters/$currentCluster"
     Write-Host ("Installing AMA extension for cluster $currentCluster")
-   {
         az stack-hci extension create `
                             --arc-setting-name "default" `
                             --cluster-name $currentCluster `
@@ -38,19 +37,12 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
                             --publisher "Microsoft.Azure.Monitor" `
                             --type "AzureMonitorWindowsAgent"
 
- 
-
- 
-
         Write-Host ("creating data association rule for $currentCluster")
         az monitor data-collection rule association create `
                                 --name "AMATestName$currentCluster" `
                                 --resource $currentClusterId `
                                 --rule-id $dcrRuleId 
-    } 
 }
-
- 
 
  
 
@@ -67,7 +59,7 @@ Set-AzContext -Subscription $subscriptionId
  
 
 # Get the list of clusters
-$clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup)
+$clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" 
 
  
 
@@ -96,7 +88,7 @@ foreach ($cluster in $clusters) {
             -ExtensionParameterPublisher "Microsoft.Azure.Monitor" `
             -ExtensionParameterType "AzureMonitorWindowsAgent"
 
- 
+    #please complete the above operation before triggering this operation
         Write-Host ("creating data association rule for $currentCluster")
         New-AzDataCollectionRuleAssociation `
             -AssociationName "AMATestName$currentCluster" `

@@ -17,13 +17,13 @@ $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[
 
 foreach ($currentCluster in $clusters) {
     
-        "Deleting Arc Extensions for cluster $currentCluster"
-		az resource delete  --ids (az stack-hci extension list `
-                                    --arc-setting-name "default" `
-                                    --cluster-name $currentCluster `
-                                    --resource-group $resourceGroup `
-                                    --subscription $subscriptionId `
-                                    --query "[].id" -o tsv) 
+    "Deleting Arc Extensions for cluster $currentCluster"
+    az resource delete  --ids (az stack-hci extension list `
+                                --arc-setting-name "default" `
+                                --cluster-name $currentCluster `
+                                --resource-group $resourceGroup `
+                                --subscription $subscriptionId `
+                                --query "[].id" -o tsv) 
 	
 }
 
@@ -32,13 +32,14 @@ foreach ($currentCluster in $clusters) {
 $extensionName = ""
 
 foreach ($currentCluster in $clusters) {
-    
-        "Deleting Arc Extension $using:extensionName for cluster $using:currentCluster"
-        az stack-hci extension delete `
-            --arc-setting-name "default" `
-            --name "${extensionName}" `
-            --cluster-name "${currentCluster}" `
-            --resource-group "${resourceGroup}"
+
+    "Deleting Arc Extension $using:extensionName for cluster $using:currentCluster"
+    az stack-hci extension delete `
+        --arc-setting-name "default" `
+        --name "${extensionName}" `
+        --cluster-name "${currentCluster}" `
+        --resource-group "${resourceGroup}" `
+        --no-wait
 }
 
 
@@ -56,7 +57,7 @@ $extensions = (Get-AzStackHciExtension -ClusterName $clusterName -ResourceGroupN
 foreach ($extension in $extensions) {
      {
         "Deleting Arc Extension $using:extensionName for cluster $currentCluster"
-        Remove-AzStackHciExtension -ClusterName $using:clusterName -ResourceGroupName $using:resourceGroup -ArcSettingName "default" -Name $using:extension
+        Remove-AzStackHciExtension -ClusterName $using:clusterName -ResourceGroupName $using:resourceGroup -ArcSettingName "default" -Name $using:extension -NoWait
     }
 }
 
@@ -66,4 +67,5 @@ $extensionName = ""
 Remove-AzStackHciExtension -ClusterName $clusterName `
                             -ResourceGroupName $resourceGroup `
                             -ArcSettingName "default" `
-                            -Name $extensionName 
+                            -Name $extensionName `
+                            -NoWait

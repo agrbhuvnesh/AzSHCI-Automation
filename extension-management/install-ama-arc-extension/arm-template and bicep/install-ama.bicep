@@ -26,6 +26,7 @@ resource DataCollectionRule 'Microsoft.Insights/dataCollectionRules@2021-09-01-p
       logAnalytics: [
         {
           name: workspaceName
+          workspaceId: workspaceId
           workspaceResourceId: '/subscriptions/${subscription().subscriptionId}/resourcegroups/${resourceGroup().name}/providers/microsoft.operationalinsights/workspaces/${workspaceName}'
         }
       ]

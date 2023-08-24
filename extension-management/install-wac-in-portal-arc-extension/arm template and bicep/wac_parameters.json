@@ -4,7 +4,7 @@
 	"parameters": {
 		"clusterNames": {
 			"value": [{
-					"name": ""
+					"name": "test-clus"
 				}
 			]
 		},

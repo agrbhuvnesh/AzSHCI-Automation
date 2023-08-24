@@ -4,7 +4,7 @@ ARM template to install Azure Site Recovery Arc Extension for Azure Stack HCI Cl
 
 
 Pre-requisites:
-	1. Some commands are to be run on every node of the cluster 
+	1. Check pre-reqs from the intsall-asr readme.
 	2. Create a Site Recovery Vault and Site to be used.
 	3. Install Az Powershell https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-9.6.0
 

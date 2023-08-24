@@ -27,7 +27,7 @@ Connect-AzAccount -Subscription $subscriptionId -Tenant $tenantId
 
 #Consent and Install Default Extensions for all clusters in a resource group
 
-$clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters").Name
+$clusters = Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty Name
 
 foreach ($cluster in $clusters) {
 
@@ -51,15 +51,19 @@ Invoke-AzStackHciConsentAndInstallDefaultExtension `
 az login --tenant $tenant
 az account set --subscription $subscription
 
-$clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].id" -o tsv
+$clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv
 
 #Consent and Install Default Extensions for all clusters in a resource group
 
-az stack-hci arc-setting consent-and-install-default-extension `
-                                    --arc-setting-name "default" `
-                                    --ids $clusters `
-                                    --resource-group $resourceGroup 
+foreach ($cluster in $clusters) {
 
+    Write-Host ("Consenting for mandatory extensions on cluster $cluster")
+
+    az stack-hci arc-setting consent-and-install-default-extension `
+                                    --arc-setting-name "default" `
+                                    --cluster-name $cluster `
+                                    --resource-group $resourceGroup 
+}
 #Consent and Install Default Extensions for a particular cluster in a resource group
 
 $clusterName = ""

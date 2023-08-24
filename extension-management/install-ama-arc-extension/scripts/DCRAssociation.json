@@ -1,58 +1,62 @@
 {
-    "properties": {
-      "destinations": {
-        "logAnalytics": [
-          {
-            "name": "WorkSpaceName",
-            "workspaceId": "workspaceId",
-            "workspaceResourceId": "/subscriptions/test-subId/resourcegroups/test-rg/providers/microsoft.operationalinsights/workspaces/test-workspace"
-          }
-        ]
-      },
-      "dataSources": {
-        "performanceCounters": [
-          {
-            "name": "perfCounterDataSource",
-            "samplingFrequencyInSeconds": 10,
-            "streams": [
-              "Microsoft-Perf"
-            ],
-            "counterSpecifiers": [
-              "\\Memory(*)\\Available Bytes",
-              "\\Network Interface(*)\\Bytes Total/sec",
-              "\\Processor(_Total)\\% Processor Time",
-              "\\RDMA Activity(*)\\RDMA Inbound Bytes/sec",
-              "\\RDMA Activity(*)\\RDMA Outbound Bytes/sec"
-            ]
-          }
-        ],
-        "windowsEventLogs": [
-          {
-            "name": "eventLogsDataSource",
-            "streams": [
-              "Microsoft-Event"
-            ],
-            "xPathQueries": [
-              "Microsoft-Windows-SDDC-Management/Operational!*[System[(EventID=3000 or EventID=3001 or EventID=3002 or EventID=3003 or EventID=3004)]]",
-              "microsoft-windows-health/operational!*"
-            ]
-          }
-        ]
-      },
-      "dataFlows": [
+  "properties": {
+    "dataSources": {
+      "performanceCounters": [
         {
           "streams": [
             "Microsoft-Perf"
           ],
-          "destinations": [
-            "WorkSpaceName"
-          ]
-        },
+          "samplingFrequencyInSeconds": 10,
+          "counterSpecifiers": [
+            "\\Memory(*)\\Available Bytes",
+            "\\Network Interface(*)\\Bytes Total/sec",
+            "\\Processor(_Total)\\% Processor Time",
+            "\\RDMA Activity(*)\\RDMA Inbound Bytes/sec",
+            "\\RDMA Activity(*)\\RDMA Outbound Bytes/sec",
+            "\\Memory\\Available Bytes"
+          ],
+          "name": "perfCounterDataSource"
+        }
+      ],
+      "windowsEventLogs": [
         {
           "streams": [
             "Microsoft-Event"
-          ]
+          ],
+          "xPathQueries": [
+            "Microsoft-Windows-SDDC-Management/Operational!*[System[(EventID=3000 or EventID=3001 or EventID=3002 or EventID=3003 or EventID=3004)]]",
+            "microsoft-windows-health/operational!*"
+          ],
+          "name": "eventLogsDataSource"
         }
       ]
-    }
+    },
+    "destinations": {
+      "logAnalytics": [
+        {
+          "workspaceResourceId": "",
+          "workspaceId": "",
+          "name": "test-workspace"
+        }
+      ]
+    },
+    "dataFlows": [
+      {
+        "streams": [
+          "Microsoft-Perf"
+        ],
+        "destinations": [
+          "test-workspace"
+        ]
+      },
+      {
+        "streams": [
+          "Microsoft-Event"
+        ],
+        "destinations": [
+          "test-workspace"
+        ]
+      }
+    ]
   }
+}

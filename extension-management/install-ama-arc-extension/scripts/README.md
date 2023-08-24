@@ -1,5 +1,5 @@
 # AzSHCI-Automation
-Run powershell script to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters. 
+Run powershell script to install Azure Windows Monitoring Agent Arc Extension for Azure Stack HCI Clusters and configure insights. 
 Pre-requisites:
 	1. Create Workspace 'microsoft.operationalinsights/workspaces' manually before running script.
 	2. Install-module az stack-cli using link https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows

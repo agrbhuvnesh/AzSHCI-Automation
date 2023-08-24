@@ -24,3 +24,4 @@ Make sure you have the following parameters ready:
 3. Choose either to delete all extensions for a specific cluster or a particular extension across all clusters.
 
 
+Note: delete call will fail for mandatory extensions

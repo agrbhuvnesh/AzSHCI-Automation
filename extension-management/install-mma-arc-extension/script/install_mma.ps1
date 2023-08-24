@@ -17,8 +17,8 @@ $clusters = @(az stack-hci cluster list --resource-group $resourceGroup --query 
 
  
 
-for ($i = 0; $i -lt $clusters.Count; $i++) {
-    $currentCluster = $clusters[$i]
+foreach($cluster in $clusters) {
+    $currentCluster = $cluster
         Write-Host ("Installing MMA extension for cluster $currentCluster")
 
     #replace workspace id and workspave key with your own values
@@ -30,8 +30,8 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
           --auto-upgrade true `
           --publisher "Microsoft.EnterpriseCloud.Monitoring" `
           --type "MicrosoftMonitoringAgent" `
-          --settings "{workspaceId:<workspaceId>}" `
-          --protected-settings "{workspaceKey:<workspaceKey>}" `
+          --settings "{workspaceId:workspace}" `
+          --protected-settings "{workspaceKey:workspacekey}" `
           --type-handler-version "1.10"
 
 }
@@ -40,33 +40,19 @@ for ($i = 0; $i -lt $clusters.Count; $i++) {
 
 # Using Powershell
 
-$Settings=@{
+Connect-AzAccount -Tenant $tenantId
+set-AzContext -Subscription $subscriptionId
 
- 
-
+$settings=@{
   "workspaceId"= ""
-
- 
-
 }
-
- 
-
  
 
 $protectedSetting=@{
   "workspaceKey"= ""
 }
 
-Connect-AzAccount -Tenant $tenantId
-set-AzContext -Subscription $subscriptionId
-
- 
-
-$clusters = @(Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
-
- 
-
+$clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty Name
 
 foreach($cluster in $clusters) {
      

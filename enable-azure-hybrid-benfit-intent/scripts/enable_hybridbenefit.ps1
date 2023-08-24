@@ -6,7 +6,7 @@ $tenant = ""
 ##Powershell 
 Connect-AzAccount -Tenant $tenant
 Set-AzContext -Subscription $subscription
-$clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters").Name
+$clusters = Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty Name
 
 #Enable Hybrid benefit for all clusters in a resource group
 Foreach ($cluster in $Clusters) {
@@ -37,7 +37,7 @@ $clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[
 az stack-hci cluster extend-software-assurance-benefit `
                                     --ids $clusters `
                                     --resource-group $resourceGroup `
-                                    --software-assurance-intent enable
+                                    --software-assurance-intent "enable"
 
 #Enable Hybrid benefit for a particular cluster in a resource group
 
@@ -46,6 +46,6 @@ $clusterName = ""
 az stack-hci cluster extend-software-assurance-benefit `
                                     --cluster-name $clusterName `
                                     --resource-group $resourceGroup `
-                                    --software-assurance-intent enable
+                                    --software-assurance-intent "enable"
     
  
