@@ -46,7 +46,7 @@ Set-AzContext -Subscription $subscriptionId
 
  
 
-$clusters = (Get-AzStackHciCluster -ResourceGroupName $resourceGroup).Name
+$clusters = Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty Name
 
  
 

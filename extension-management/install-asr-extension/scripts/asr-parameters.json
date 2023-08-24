@@ -1,0 +1,11 @@
+{
+    "SubscriptionId": "your SubscriptionId",
+    "Environment": "AzureCloud",
+    "ResourceGroup": "your ResourceGroup",
+    "ResourceName": "your site recovery vault name",
+    "Location": "your site recovery region",
+    "SiteId": "Id for your recovery site",
+    "SiteName": "ypur recovery site name",
+    "PolicyId": "your resource id for recovery site policy",
+    "PrivateEndpointStateForSiteRecovery": "None"
+}
