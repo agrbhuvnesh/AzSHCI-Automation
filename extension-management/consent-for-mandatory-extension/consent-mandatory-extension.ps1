@@ -1,6 +1,6 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
+$subscriptionId = "" #enter subscription id here
+$resourceGroup = "" #enter the resource group where the clusters exist
+$tenantId = "" #enter the tenant id here
 
 #With Az-RestMethod
 
@@ -51,7 +51,7 @@ Invoke-AzStackHciConsentAndInstallDefaultExtension `
 az login --tenant $tenant
 az account set --subscription $subscription
 
-$clusters = az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv
+$clusters = az resource list --resource-group $resourceGroup --resource-type "Microsoft.AzureStackHCI/clusters" --query "[].name" -o tsv
 
 #Consent and Install Default Extensions for all clusters in a resource group
 
