@@ -132,7 +132,7 @@ resource "azurerm_monitor_data_collection_rule" "data_collection_rule" {
 resource "azapi_resource" "azurestackhci_cluster_extension" {
   for_each  = toset(var.clusterResourceIds)
   type      = "microsoft.azurestackhci/clusters/arcsettings/extensions@${var.azStackHCIApiVersion}"
-  name      = "AzureMonitorWindowsAgent"
+  name      = local.AMAExtensionName
   parent_id = "${data.azapi_resource.cluster[each.key].id}/arcSettings/default"
   body = jsonencode({
     properties = {
