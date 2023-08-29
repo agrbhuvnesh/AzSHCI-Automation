@@ -5,6 +5,7 @@ Terraform code to to install Windows Admin Center Arc Extension for Azure Stack 
 
 Pre-requisites:
 	1. Install Az Powershell https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-9.6.0
+	2. [Install Terraform CLI](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
 Configure the variable values in variables.tfvars:
 

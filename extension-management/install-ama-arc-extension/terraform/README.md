@@ -8,6 +8,7 @@ Terraform code to install Azure Windows Monitoring Agent (AMA) Arc Extension for
 Pre-requisites:
 	1. Create Workspace 'microsoft.operationalinsights/workspaces' manually before running script.
 	2. Install Az Powershell https://learn.microsoft.com/en-us/powershell/azure/install-azure-powershell?view=azps-9.6.0
+	3. [Install Terraform CLI](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 
 Configure the variable values in variables.tfvars:
 
