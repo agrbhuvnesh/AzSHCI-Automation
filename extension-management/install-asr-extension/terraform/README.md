@@ -11,7 +11,7 @@ Pre-requisites:
 
 Configure the values in variables.tfvars:
 
-1. cluster-names: Array of the clusters to install ASR extension on
+1. clusterResourceIds: Array of the clusters to install ASR extension on
 2. azStackHCIApiVersion: Azure Stack HCI Cluster api version to be used with azapi_resource
 3. recoverySiteId: Site Id for the recovery vault 
 4. recoverySiteName: Name of the site id for the recovery vault
