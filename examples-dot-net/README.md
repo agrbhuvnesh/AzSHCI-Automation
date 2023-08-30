@@ -110,6 +110,7 @@ Create an object and call the method
                 await obj.Get_GetArcSettingsExtension();
 ```
 
+#### Get a Arc Setting Extension Resource
 Get azure token
 
 ```C# Snippet: TokenCredential cred = new DefaultAzureCredential();
