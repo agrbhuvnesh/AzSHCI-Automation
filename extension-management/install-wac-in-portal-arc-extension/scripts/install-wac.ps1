@@ -5,8 +5,7 @@ $tenantId = ""
 
 ## USING AZ CLI
 
-$settingsPath = "path to port-wac.json"
-$portSettings = Get-Content $settingsPath -Raw | ConvertFrom-Json
+$settingsConfig = "{'port':'6516'}"
 
 az login --tenant $tenantId
 az account set -s  $subscriptionId
@@ -34,7 +33,7 @@ foreach ($currentCluster in $clusters) {
         --resource-group $resourceGroup `
         --publisher "Microsoft.AdminCenter" `
         --type "AdminCenter" `
-        --settings "{'port':'6516'}"
+        --settings $settingsConfig
 }
 
  
