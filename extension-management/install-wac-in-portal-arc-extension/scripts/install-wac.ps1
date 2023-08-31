@@ -34,7 +34,7 @@ foreach ($currentCluster in $clusters) {
         --resource-group $resourceGroup `
         --publisher "Microsoft.AdminCenter" `
         --type "AdminCenter" `
-        --settings $portSettings
+        --settings "{'port':'6516'}"
 }
 
  
