@@ -43,82 +43,20 @@ Documentation is available to help you learn how to use this package:
 - [Authentication](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/identity/Azure.Identity/README.md).
 
 ## Examples
-### Create a namespace
-
-Before creating a namespace, we need to have a resource group.
-
-```C# Snippet:Managing_ServiceBusNamespaces_GetSubscription
-ArmClient armClient = new ArmClient(new DefaultAzureCredential());
-SubscriptionResource subscription = await armClient.GetDefaultSubscriptionAsync();
-```
-```C# Snippet:Managing_ServiceBusNamespaces_CreateResourceGroup
-string rgName = "myRgName";
-AzureLocation location = AzureLocation.WestUS2;
-ArmOperation<ResourceGroupResource> operation = await subscription.GetResourceGroups().CreateOrUpdateAsync(WaitUntil.Completed, rgName, new ResourceGroupData(location));
-ResourceGroupResource resourceGroup = operation.Value;
-```
-
-Then we can create a namespace inside this resource group.
-
-```C# Snippet:Managing_ServiceBusNamespaces_CreateNamespace
-string namespaceName = "myNamespace";
-ServiceBusNamespaceCollection namespaceCollection = resourceGroup.GetServiceBusNamespaces();
-AzureLocation location = AzureLocation.EastUS2;
-ServiceBusNamespaceResource serviceBusNamespace = (await namespaceCollection.CreateOrUpdateAsync(WaitUntil.Completed, namespaceName, new ServiceBusNamespaceData(location))).Value;
-```
-
-### Get all namespaces in a resource group
-
-```C# Snippet:Managing_ServiceBusNamespaces_ListNamespaces
-ServiceBusNamespaceCollection namespaceCollection = resourceGroup.GetServiceBusNamespaces();
-await foreach (ServiceBusNamespaceResource serviceBusNamespace in namespaceCollection.GetAllAsync())
-{
-    Console.WriteLine(serviceBusNamespace.Id.Name);
-}
-```
-
-### Get a namespace
-
-```C# Snippet:Managing_ServiceBusNamespaces_GetNamespace
-ServiceBusNamespaceCollection namespaceCollection = resourceGroup.GetServiceBusNamespaces();
-ServiceBusNamespaceResource serviceBusNamespace = await namespaceCollection.GetAsync("myNamespace");
-Console.WriteLine(serviceBusNamespace.Id.Name);
-```
-
-### Delete a namespace
-```C# Snippet:Managing_ServiceBusNamespaces_DeleteNamespace
-ServiceBusNamespaceCollection namespaceCollection = resourceGroup.GetServiceBusNamespaces();
-ServiceBusNamespaceResource serviceBusNamespace = await namespaceCollection.GetAsync("myNamespace");
-await serviceBusNamespace.DeleteAsync(WaitUntil.Completed);
-```
 
 ### Arc Extension Resource
 
 #### Get a Arc Setting Extension Resource
-
-Update the parameters given below
-
-```C# Snippet:string subscriptionId = "<subscriptionId>";
-            string resourceGroupName = "test-rg";
-            string clusterName = "myCluster";
-            string arcSettingName = "default";
-            string extensionName = "MicrosoftMonitoringAgent";
-```
-Create an object and call the method
-
-```C# Snippet: Sample_ArcExtensionCollection obj = new Sample_ArcExtensionCollection();
-                await obj.Get_GetArcSettingsExtension();
-```
-
-#### Get a Arc Setting Extension Resource
 Get azure token
 
-```C# Snippet: TokenCredential cred = new DefaultAzureCredential();
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
             ArmClient client = new ArmClient(cred);
 ```
 Update the parameters given below
 
-```C# Snippet:string subscriptionId = "<subscriptionId>";
+```C# Snippet:
+            string subscriptionId = "<subscriptionId>";
             string resourceGroupName = "test-rg";
             string clusterName = "myCluster";
             string arcSettingName = "default";
@@ -126,9 +64,19 @@ Update the parameters given below
 ```
 Get arc extension resource
 
-```C# Snippet: ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName, extensionName);
+```C# Snippet: 
+            ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName, extensionName);
             ArcExtensionResource arcExtension = client.GetArcExtensionResource(arcExtensionResourceId);
-             ArcExtensionResource result = await arcExtension.GetAsync();
+            // the variable result is a resource, you could call other operations on this instance as well
+             ArcExtensionResource result = arcExtension.GetAsync().Result;
+
+
+```
+
+For confirmation we can print the id from ResourceData
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
 ```
 Code samples for using the management library for .NET can be found in the following locations
 - [.NET Management Library Code Samples](https://aka.ms/azuresdk-net-mgmt-samples)
