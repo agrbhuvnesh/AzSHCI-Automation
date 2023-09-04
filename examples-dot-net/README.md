@@ -386,6 +386,365 @@ Documentation is available to help you learn how to use this package:
         Console.WriteLine($"Succeeded: {result}");
 ```
 
+### Arc Setting Collection
+
+#### List All the Setting Resources in HCI cluster
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+3. Get Arc Setting Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // get the collection of this ArcSettingResource
+            ArcSettingCollection collection = hciCluster.GetArcSettings();
+
+```
+
+4. For confirmation we will print each of the id retrieved from result
+
+```C# Snippet: 
+            foreach (ArcSettingResource item in collection)
+            {
+                // the variable item is a resource, you could call other operations on this instance as well
+                // but just for demo, we get its data from this resource instance
+                ArcSettingData resourceData = item.Data;
+                // for demo we just print out the id
+                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+            }
+
+            Console.WriteLine($"Succeeded");
+```
+
+#### Get Arc Setting
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+3. Get the Arc Setting Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // get the collection of this ArcSettingResource
+            ArcSettingCollection collection = hciCluster.GetArcSettings();
+```
+
+4. Invoke the Operation
+
+```C# Snippet: 
+            string arcSettingName = "default";
+            ArcSettingResource result =  collection.GetAsync(arcSettingName).Result;
+```
+
+5. For confirmation we will print the id retrieved from result
+
+```C# Snippet: 
+        ArcSettingData resourceData = result.Data;
+        
+        // for demo we just print out the id
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+#### Check if the Arc Setting Exists
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+3. Get the Arc Extension Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // get the collection of this ArcSettingResource
+            ArcSettingCollection collection = hciCluster.GetArcSettings();
+```
+
+4. Invoke the operation
+
+```C# Snippet: 
+            
+            string arcSettingName = "default";
+            bool result =  collection.ExistsAsync(arcSettingName).Result;
+```
+
+5. For confirmation we can print the text "Succeeded"
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded: {result}");
+```
+
+#### Create or Update Arc Setting
+
+1. Get azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+3. Get the Arc Extension Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // get the collection of this ArcSettingResource
+            ArcSettingCollection collection = hciCluster.GetArcSettings();
+```
+
+4. Invoke the create or update operation
+
+```C# Snippet: 
+            string arcSettingName = "default";
+            ArcSettingData data = new ArcSettingData();
+            Console.WriteLine(data);
+            Console.WriteLine(collection);
+            
+            ArmOperation<ArcSettingResource> lro =  collection.CreateOrUpdateAsync(WaitUntil.Completed, arcSettingName, data).Result;
+            Console.WriteLine($"lro:{lro}");
+            ArcSettingResource result = lro.Value;
+
+```
+
+4. For confirmation we print the Id
+
+```C# Snippet: 
+        ArcSettingData resourceData = result.Data;
+        
+        // for demo we just print out the id
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+### Arc Extension Collection
+
+#### Get all extensions under Arc Setting Resource
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
+```
+3. Get Arc Setting Resource
+
+```C# Snippet: 
+            ResourceIdentifier arcSettingResourceId = ArcSettingResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName);
+            ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
+
+            // get the collection of this ArcExtensionResource
+            ArcExtensionCollection collection = arcSetting.GetArcExtensions();
+
+```
+
+4. For confirmation we will print each of the id retrieved from result
+
+```C# Snippet: 
+        foreach (ArcExtensionResource item in collection)
+            {
+                // the variable item is a resource, you could call other operations on this instance as well
+                // but just for demo, we get its data from this resource instance
+                ArcExtensionData resourceData = item.Data;
+                // for demo we just print out the id
+                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+            }
+        Console.WriteLine($"Succeeded");
+```
+
+#### Get Arc Setting Extension
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
+```
+3. Get the Arc Setting Resource
+
+```C# Snippet: 
+            ResourceIdentifier arcSettingResourceId = ArcSettingResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName);
+            ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
+
+            // get the collection of this ArcExtensionResource
+            ArcExtensionCollection collection = arcSetting.GetArcExtensions();
+```
+
+4. Invoke the Operation
+
+```C# Snippet: 
+            string extensionName = "MicrosoftMonitoringAgent";
+            ArcExtensionResource result = collection.GetAsync(extensionName).Result;
+```
+
+5. For confirmation we will print the id retrieved from result
+
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+#### Check if the Arc Settings Extension Exists
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
+```
+3. Get the Arc Extension Resource
+
+```C# Snippet: 
+            ResourceIdentifier arcSettingResourceId = ArcSettingResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName);
+            ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
+
+            // get the collection of this ArcExtensionResource
+            ArcExtensionCollection collection = arcSetting.GetArcExtensions();
+```
+
+4. Invoke the operation
+
+```C# Snippet: 
+            
+            // invoke the operation
+            string extensionName = "MicrosoftMonitoringAgent";
+            bool result =  collection.ExistsAsync(extensionName).Result;
+```
+
+5. For confirmation we can print the text "Succeeded"
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded: {result}");
+```
+
+#### Create or Update Arc Extension
+
+1. Get azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
+```
+3. Get the Arc Extension Resource
+
+```C# Snippet: 
+            ResourceIdentifier arcSettingResourceId = ArcSettingResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName);
+            ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
+
+            // get the collection of this ArcExtensionResource
+            ArcExtensionCollection collection = arcSetting.GetArcExtensions();
+```
+
+4. Invoke the create or update operation
+
+```C# Snippet: 
+            string extensionName = "MicrosoftMonitoringAgent";
+            ArcExtensionData data = new ArcExtensionData()
+            
+            {
+                Publisher = "Microsoft.EnterpriseCloud.Monitoring",
+                ArcExtensionType = "MicrosoftMonitoringAgent",
+                TypeHandlerVersion = "1.10",
+                ShouldAutoUpgradeMinorVersion = false,
+                Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["workspaceId"] = "694e3ed4-e103-40da-8082-3ddcca5ae1a4"
+                }),
+                ProtectedSettings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["workspaceKey"] = "WSsPeIGP7ozmIl33bI+4mxexmDKeWMe3/YW0IMEicHkyd9cdTTJ9GRuJ7AmslvHSbyptsCi8lVI2yoJcyntD+Q=="
+                }),
+                EnableAutomaticUpgrade = false,
+            };
+
+            ArmOperation<ArcExtensionResource> lro = await collection.CreateOrUpdateAsync(WaitUntil.Completed, extensionName, data);
+
+            Response<ArcExtensionResource> response = await lro.WaitForCompletionAsync();
+                ArcExtensionResource result = response.Value;
+
+```
+
+4. For confirmation we print the Id
+
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+                Console.WriteLine(result);
+        // for demo we just print out the id
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
 Code samples for using the management library for .NET can be found in the following locations
 - [.NET Management Library Code Samples](https://aka.ms/azuresdk-net-mgmt-samples)
 
