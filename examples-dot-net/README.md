@@ -44,6 +44,350 @@ Documentation is available to help you learn how to use this package:
 
 ## Examples
 
+### Hci Cluster Collection
+
+#### Get list of all clusters in a given resource group()
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+```
+3. Get the collection of the Hci Cluster Resource
+```C# Snippet:
+            HciClusterCollection collection = resourceGroupResource.GetHciClusters();
+```
+4. Get Resource group resource
+
+```C# Snippet: 
+            ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
+            ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
+```
+5. Invoke the operation and iterate over the data
+
+```C# Snippet: 
+            await foreach (HciClusterResource item in collection.GetAllAsync())
+            {
+                // the variable item is a resource, you could call other operations on this instance as well
+                // but just for demo, we get its data from this resource instance
+                HciClusterData resourceData = item.Data;
+                // for demo we just print out the id
+                Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+            }
+
+```
+
+6. For confirmation we will print Succeeded.
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded");
+```
+
+#### Get Cluster
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+```
+3. Get the collection of the Hci Cluster Resource
+```C# Snippet:
+            HciClusterCollection collection = resourceGroupResource.GetHciClusters();
+```
+
+4. Invoke the operation to get the cluster
+
+```C# Snippet: 
+            string clusterName = "myCluster";
+            HciClusterResource result = await collection.GetAsync(clusterName);
+
+```
+
+5. For confirmation we will print the id.
+
+```C# Snippet: 
+            HciClusterData resourceData = result.Data;
+            Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+#### Check if cluster Exists 
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+```
+3. Get Resource group resource
+
+```C# Snippet: 
+            ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
+            ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
+```
+4. Invoke the Exists operation
+
+```C# Snippet: 
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            bool result = await collection.ExistsAsync(clusterName);
+```
+
+5. For confirmation we will print the result.
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded: {result}");
+```
+#### Create or update cluster 
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+```
+3. Get Resource group resource
+
+```C# Snippet: 
+            ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
+            ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
+```
+4. Invoke the operation to create or update a cluster
+
+```C# Snippet: 
+            string clusterName = "myCluster";
+            HciClusterData data = new HciClusterData(new AzureLocation("East US"))
+            {
+                CloudManagementEndpoint = "https://98294836-31be-4668-aeae-698667faf99b.waconazure.com",
+                AadClientId = Guid.Parse("24a6e53d-04e5-44d2-b7cc-1b732a847dfc"),
+                AadTenantId = Guid.Parse("7e589cc1-a8b6-4dff-91bd-5ec0fa18db94"),
+                TypeIdentityType = HciManagedServiceIdentityType.SystemAssigned,
+            };
+            ArmOperation<HciClusterResource> lro = await collection.CreateOrUpdateAsync(WaitUntil.Completed, clusterName, data);
+            HciClusterResource result = lro.Value;
+```
+
+5. For confirmation we will print id.
+
+```C# Snippet: 
+             HciClusterData resourceData = result.Data;
+            
+            Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+### Hci Cluster Resource
+
+#### Get Cluster
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+
+3. Get Hci Cluster Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // invoke the operation
+            HciClusterResource result = hciCluster.GetAsync().Result;
+```
+
+4. For confirmation we will print the id retrieved from result
+
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+#### Update Cluster
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+
+3. Get Hci Cluster Resource
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+```
+
+4. Invoke the Update Operation
+
+```C# Snippet: 
+            HciClusterPatch patch = new HciClusterPatch()
+            {
+                Tags =
+                {
+                ["tag1"] = "value1",
+                ["tag2"] = "value2",
+                },
+                CloudManagementEndpoint = "https://98294836-31be-4668-aeae-698667faf99b.waconazure.com",
+                DesiredProperties = new HciClusterDesiredProperties()
+                {
+                    WindowsServerSubscription = WindowsServerSubscription.Enabled,
+                    DiagnosticLevel = HciClusterDiagnosticLevel.Basic,
+                },
+                ManagedServiceIdentityType = HciManagedServiceIdentityType.SystemAssigned,
+            };
+            HciClusterResource result = await hciCluster.UpdateAsync(patch);
+```
+
+5. For confirmation we will print the id retrieved from result
+
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+#### Delete Cluster
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+
+3. Get Hci Cluster Resource and Delete it
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+
+            // invoke the operation
+            await hciCluster.DeleteAsync(WaitUntil.Completed);
+```
+
+4. For confirmation we will print the text succeeded
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded");
+```
+
+#### Create Cluster Identity
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+
+3. Get Hci Cluster Resource and Delete it
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+```
+
+4. Invoke the Operation
+
+```C# Snippet: 
+            ArmOperation<HciClusterIdentityResult> lro = await hciCluster.CreateIdentityAsync(WaitUntil.Completed);
+            HciClusterIdentityResult result = lro.Value;
+```
+
+
+5. For confirmation we will print the text succeeded
+
+```C# Snippet: 
+        Console.WriteLine($"Succeeded");
+```
+
+#### Extend Software Assurance Benefit to Cluster Identity
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+```
+
+3. Get Hci Cluster Resource and Delete it
+
+```C# Snippet: 
+            ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
+            HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
+```
+
+4. Invoke the Operation
+
+```C# Snippet: 
+            SoftwareAssuranceChangeContent content = new SoftwareAssuranceChangeContent()
+            {
+                SoftwareAssuranceIntent = SoftwareAssuranceIntent.Enable,
+            };
+            ArmOperation<HciClusterResource> lro =  hciCluster.ExtendSoftwareAssuranceBenefitAsync(WaitUntil.Completed, content).Result;
+            HciClusterResource result = lro.Value;
+```
+
+
+5. For confirmation we will print the id from result
+
+```C# Snippet: 
+        ArcExtensionData resourceData = result.Data;
+        Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+
 ### Arc Extension Resource
 
 #### Get a Arc Setting Extension Resource
