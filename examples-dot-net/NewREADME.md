@@ -70,11 +70,71 @@ Documentation is available to help you learn how to use this package:
 
 #### Installing Extensions as part of enabling capabilities
 
+##### Prerequisites
+
+1. Get the Azure token
+
+```C# Snippet: 
+            TokenCredential cred = new DefaultAzureCredential();
+            ArmClient client = new ArmClient(cred);
+```
+2. Update the parameters given below
+```C# Snippet:
+            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string clusterName = "HCICluster"; # Replace with your cluster name
+            string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
+```
+3. Get Arc Setting Resource
+
+```C# Snippet: 
+            ResourceIdentifier arcSettingResourceId = ArcSettingResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, arcSettingName);
+            ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
+```
+
 ##### Install ASR
 
 ##### Install WAC
 
 ##### Install AMA
+
+1. Create the Payload
+
+```C# Snippet:
+            // invoke the operation
+
+            string extensionName = "AzureMonitorWindowsAgent";
+            ArcExtensionData data = new ArcExtensionData()
+            {
+                Publisher = "Microsoft.Azure.Monitor",
+                ArcExtensionType = "AzureMonitorWindowsAgent",
+                TypeHandlerVersion = "1.10",
+                Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["workspaceId"] = "xx"
+                }),
+                ProtectedSettings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["workspaceKey"] = "xx" 
+                }),
+                EnableAutomaticUpgrade = false,
+            };
+```
+
+2. Create the Extension
+
+```C# Snippet:
+           ArmOperation<ArcExtensionResource> lro = await collection.CreateOrUpdateAsync(WaitUntil.Completed, extensionName, data);
+           ArcExtensionResource result = lro.Value;
+```
+
+3. Confirmation of the Operation
+
+```C# Snippet:
+           ArcExtensionData resourceData = result.Data;
+           Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
 
 #### Extension upgrade
 
@@ -166,6 +226,32 @@ Documentation is available to help you learn how to use this package:
         Console.WriteLine($"The delete operation was successful!");
 ```
 
+#### Delete all HCI Clusters in a Resource Group
+1. After Updating Parameters, get the HCI Cluster Resource Collection
+
+```C# Snippet: 
+            ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
+            ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
+
+            // get the collection of this HciClusterResource
+            HciClusterCollection collection = resourceGroupResource.GetHciClusters();
+```
+2. Calling the delete function for all Cluster Resources in the collection
+
+```C# Snippet: 
+        await foreach (HciClusterResource item in collection.GetAllAsync())
+            {
+                // delete the item
+
+                await item.DeleteAsync(WaitUntil.Completed);
+            }
+```
+3. Printing the Confirmation Text
+
+```C# Snippet: 
+        Console.WriteLine($"The delete operation on Hci Cluster Collection was successful!");
+```
+
 #### Update HCI Cluster Properties
 
 1. Invoke the Update Operation
@@ -198,9 +284,7 @@ Documentation is available to help you learn how to use this package:
 
 #### Enable Azure Hybrid Benefits  
 
-##### Extend Software Assurance Benefit:
-
-1. Invoke the Operation to Extend Software Assurance Benefit
+1. Invoke the Operation to Extend Azure Hybrid Benefit
 
 ```C# Snippet: 
             SoftwareAssuranceChangeContent content = new SoftwareAssuranceChangeContent()
