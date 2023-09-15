@@ -231,7 +231,7 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"Upgradation of Extension Successful!");
+            Console.WriteLine($"Upgradation of Extension Successful!");
 ```
 
 #### Installing azure- managed default extensions
@@ -247,7 +247,7 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of Delete Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"The ARC Extension has been deleted successfully!");
+            Console.WriteLine($"The ARC Extension has been deleted successfully!");
 ```
 
 #### Extension update with update center
@@ -287,8 +287,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id retrieved from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"The Cluster Resource was successfully retrieved with ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"The Cluster Resource was successfully retrieved with ID: {resourceData.Id}");
 ```
 
 #### Delete Single HCI cluster 
@@ -301,7 +301,7 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of the Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"The delete operation was successful!");
+            Console.WriteLine($"The delete operation was successful!");
 ```
 
 #### Delete all HCI Clusters in a Resource Group
@@ -317,7 +317,7 @@ Documentation is available to help you learn how to use this package:
 2. Calling the delete function for all Cluster Resources in the collection
 
 ```C# Snippet: 
-        await foreach (HciClusterResource item in collection.GetAllAsync())
+            await foreach (HciClusterResource item in collection.GetAllAsync())
             {
                 // delete the item
 
@@ -327,7 +327,7 @@ Documentation is available to help you learn how to use this package:
 3. Printing the Confirmation Text
 
 ```C# Snippet: 
-        Console.WriteLine($"The delete operation on Hci Cluster Collection was successful!");
+            Console.WriteLine($"The delete operation on Hci Cluster Collection was successful!");
 ```
 
 #### Update HCI Cluster Properties
@@ -356,8 +356,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id retrieved from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"Update Operation Succeeded for Cluster ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"Update Operation Succeeded for Cluster ID: {resourceData.Id}");
 ```
 
 #### Enable Azure Hybrid Benefits  
@@ -377,8 +377,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"Software Assurance Benefits Succeessfully Extended to Cluster ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"Software Assurance Benefits Succeessfully Extended to Cluster ID: {resourceData.Id}");
 ```
 
 Code samples for using the management library for .NET can be found in the following locations
