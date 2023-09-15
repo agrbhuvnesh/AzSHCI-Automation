@@ -92,10 +92,6 @@ Documentation is available to help you learn how to use this package:
             ArcSettingResource arcSetting = client.GetArcSettingResource(arcSettingResourceId);
 ```
 
-##### Install ASR
-
-##### Install WAC
-
 ##### Install AMA
 
 1. Create the Payload
@@ -116,6 +112,88 @@ Documentation is available to help you learn how to use this package:
                 ProtectedSettings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
                     ["workspaceKey"] = "xx" 
+                }),
+                EnableAutomaticUpgrade = false,
+            };
+```
+
+2. Create the Extension
+
+```C# Snippet:
+           ArmOperation<ArcExtensionResource> lro = await collection.CreateOrUpdateAsync(WaitUntil.Completed, extensionName, data);
+           ArcExtensionResource result = lro.Value;
+```
+
+3. Confirmation of the Operation
+
+```C# Snippet:
+           ArcExtensionData resourceData = result.Data;
+           Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+```
+
+##### Install WAC
+1. Enable Connectivity
+```C# Snippet:
+           ArcSettingPatch patch = new ArcSettingPatch()
+                       {
+                             ConnectivityProperties = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                            {
+                                ["enabled"] = true
+                            })
+                            
+                        };
+            ArcSettingResource result1 = await arcSetting.UpdateAsync(patch);
+
+```
+2. Create the Payload
+
+```C# Snippet:
+            // invoke the operation
+
+            string extensionName = "AzureMonitorWindowsAgent";
+            ArcExtensionData data = new ArcExtensionData()
+            {
+                Publisher = "Microsoft.Azure.Monitor",
+                ArcExtensionType = "AzureMonitorWindowsAgent",
+                TypeHandlerVersion = "1.10",
+                Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["port"] = "6516"
+                }),
+                EnableAutomaticUpgrade = false,
+            };
+```
+3. Create the Extension
+
+```C# Snippet:
+           ArmOperation<ArcExtensionResource> lro = await collection.CreateOrUpdateAsync(WaitUntil.Completed, extensionName, data);
+           ArcExtensionResource result = lro.Value;
+```
+
+4. Confirmation of the Operation
+
+```C# Snippet:
+           ArcExtensionData resourceData = result.Data;
+           Console.WriteLine($"Succeeded on id: {resourceData.Id}");
+ 
+ ```
+ 
+##### Install ASR
+1. Create the Payload
+
+```C# Snippet:
+            // invoke the operation
+
+            string extensionName = "AzureMonitorWindowsAgent";
+            ArcExtensionData data = new ArcExtensionData()
+            {
+                Publisher = "Microsoft.Azure.Monitor",
+                ArcExtensionType = "AzureMonitorWindowsAgent",
+                TypeHandlerVersion = "1.10",
+                Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
+                {
+                    ["SiteId"]= "d5d04ea1-4672-56f8-ad2c-9318950457db",
+            ["SiteName"]= "nikitaTestSite",
                 }),
                 EnableAutomaticUpgrade = false,
             };
