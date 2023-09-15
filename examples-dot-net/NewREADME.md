@@ -192,8 +192,17 @@ Documentation is available to help you learn how to use this package:
                 TypeHandlerVersion = "1.10",
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["SiteId"]= "xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx",
-            ["SiteName"]= "testSite",
+                    {
+                        "SubscriptionId": "your SubscriptionId",
+                        "Environment": "AzureCloud",
+                        "ResourceGroup": "your ResourceGroup",
+                        "ResourceName": "your site recovery vault name",
+                        "Location": "your site recovery region",
+                        "SiteId": "Id for your recovery site",
+                        "SiteName": "ypur recovery site name",
+                        "PolicyId": "your resource id for recovery site policy",
+                        "PrivateEndpointStateForSiteRecovery": "None"
+}
                 }),
                 EnableAutomaticUpgrade = false,
             };
