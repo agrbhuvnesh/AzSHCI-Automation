@@ -192,8 +192,8 @@ Documentation is available to help you learn how to use this package:
                 TypeHandlerVersion = "1.10",
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["SiteId"]= "d5d04ea1-4672-56f8-ad2c-9318950457db",
-            ["SiteName"]= "nikitaTestSite",
+                    ["SiteId"]= "xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx",
+            ["SiteName"]= "testSite",
                 }),
                 EnableAutomaticUpgrade = false,
             };
