@@ -9,12 +9,8 @@ $tenant = ""
 
  
 
-Connect-AzAccount
-
- 
-
-Set-AzContext -Subscription $subscription
-$clusters = (Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters").Name
+Connect-AzAccount -Subscription $subscription
+$clusters = Get-AzResource  -ResourceGroupName  $resourceGroup -ResourceType "Microsoft.AzureStackHCI/clusters" | Select-Object -ExpandProperty Name
 
  
 

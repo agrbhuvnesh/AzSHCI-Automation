@@ -1,0 +1,28 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"clusterNames": {
+			"value": [
+				{
+					"name": "test-cluster"
+				},
+				{
+					"name": "test-cluster-2"
+				},
+				{
+					"name": "test-cluster-3"
+				}
+			]
+		},
+		"location": {
+			"value": "East US"
+		},
+		"workspaceId": {
+			"value": "xxxxxx-xxxx-xxxx-xxx-xxxxxxxxxx"
+		},
+		"workspaceName": {
+			"value": "test-workspace"
+		}
+	}
+}

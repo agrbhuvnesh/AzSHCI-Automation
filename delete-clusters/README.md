@@ -14,15 +14,14 @@ Make sure you have the following parameters ready:
 
 ### Using Azure CLI
 
-1. Log in to your Azure subscription.
-2. Run the script.
-3. Choose either to delete all clusters in the resource group or a particular cluster.
+
+1. Run the script and login to Azure.
+2. Choose either to delete all clusters in the resource group or a particular cluster.
 
 
 ### Using PowerShell
 
-1. Log in to your Azure subscription.
-2. Run the script.
-3. Choose either to delete all clusters in the resource group or a particular cluster.
+1. Run the script and login to Azure.
+2. Choose either to delete all clusters in the resource group or a particular cluster.
 
 
