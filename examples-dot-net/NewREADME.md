@@ -150,11 +150,11 @@ Documentation is available to help you learn how to use this package:
 ```C# Snippet:
             // invoke the operation
 
-            string extensionName = "AzureMonitorWindowsAgent";
+            string extensionName = "AdminCenter";
             ArcExtensionData data = new ArcExtensionData()
             {
-                Publisher = "Microsoft.Azure.Monitor",
-                ArcExtensionType = "AzureMonitorWindowsAgent",
+                Publisher = "Microsoft.AdminCenter",
+                ArcExtensionType = "AdminCenter",
                 TypeHandlerVersion = "1.10",
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
@@ -184,12 +184,11 @@ Documentation is available to help you learn how to use this package:
 ```C# Snippet:
             // invoke the operation
 
-            string extensionName = "AzureMonitorWindowsAgent";
+            string extensionName = "AzureSiteRecovery";
             ArcExtensionData data = new ArcExtensionData()
             {
-                Publisher = "Microsoft.Azure.Monitor",
-                ArcExtensionType = "AzureMonitorWindowsAgent",
-                TypeHandlerVersion = "1.10",
+                Publisher = "Microsoft.SiteRecovery.Dra",
+                ArcExtensionType = "Windows",
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
                     {
