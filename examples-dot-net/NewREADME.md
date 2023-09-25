@@ -1,7 +1,5 @@
 # Microsoft Azure Stack HCI management client library for .NET
 
-Microsoft Azure VMware Solution is a VMware validated solution with ongoing validation and testing of enhancements and upgrades. Microsoft manages and maintains the private cloud infrastructure and software. It allows you to focus on developing and running workloads in your private clouds to deliver business value.
-
 This library supports managing Microsoft Azure Stack HCI resources.
 
 This library follows the [new Azure SDK guidelines](https://azure.github.io/azure-sdk/general_introduction.html), and provides many core capabilities:
@@ -59,7 +57,7 @@ Documentation is available to help you learn how to use this package:
             string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
             string clusterName = "HCICluster"; # Replace with your cluster name
             string arcSettingName = "HCIArcSettingName"; # Replace with your Arc Setting Name
-            string extensionName = "MicrosoftMonitoringAgent"; # Replace with your extension name
+            string extensionName = "AzureMonitorWindowsAgent"; # Replace with your extension name
 ```
 3. Get Arc Extension Resource
 
@@ -70,7 +68,7 @@ Documentation is available to help you learn how to use this package:
 
 #### Installing Extensions as part of enabling capabilities
 
-##### Prerequisites
+##### Prerequisites for installing extensions
 
 1. Get the Azure token
 
@@ -100,20 +98,27 @@ Documentation is available to help you learn how to use this package:
             // invoke the operation
 
             string extensionName = "AzureMonitorWindowsAgent";
+            string publisherName = "Microsoft.Azure.Monitor";
+            string arcExtensionName = "AzureMonitorWindowsAgent";
+            string typeHandlerVersion = "1.10";
+            string workspaceId = "xx";
+            string workspaceKey = "xx";
+            bool enableAutomaticUpgrade = false;
+
             ArcExtensionData data = new ArcExtensionData()
             {
-                Publisher = "Microsoft.Azure.Monitor",
-                ArcExtensionType = "AzureMonitorWindowsAgent",
-                TypeHandlerVersion = "1.10",
+                Publisher = publisherName,
+                ArcExtensionType = arcExtensionName,
+                TypeHandlerVersion = typeHandlerVersion,
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["workspaceId"] = "xx"
+                    ["workspaceId"] = workspaceId
                 }),
                 ProtectedSettings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["workspaceKey"] = "xx" 
+                    ["workspaceKey"] = workspaceKey
                 }),
-                EnableAutomaticUpgrade = false,
+                EnableAutomaticUpgrade = enableAutomaticUpgrade,
             };
 ```
 
@@ -132,13 +137,16 @@ Documentation is available to help you learn how to use this package:
 ```
 
 ##### Install WAC
-1. Enable Connectivity
+1. Enable Network Connectivity to allow Data Transmission
+
+
 ```C# Snippet:
+           bool isEnabled = true;
            ArcSettingPatch patch = new ArcSettingPatch()
                        {
                              ConnectivityProperties = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                             {
-                                ["enabled"] = true
+                                ["enabled"] = isEnabled
                             })
                             
                         };
@@ -150,17 +158,23 @@ Documentation is available to help you learn how to use this package:
 ```C# Snippet:
             // invoke the operation
 
-            string extensionName = "AzureMonitorWindowsAgent";
+            string extensionName = "AdminCenter";
+            string publisherName = "Microsoft.AdminCenter";
+            string arcExtensionType = "AdminCenter";
+            string typeHandlerVersion = "1.10";
+            string portNumber = "6516";
+            bool enableAutoUpgrade = false;
+
             ArcExtensionData data = new ArcExtensionData()
             {
-                Publisher = "Microsoft.Azure.Monitor",
-                ArcExtensionType = "AzureMonitorWindowsAgent",
-                TypeHandlerVersion = "1.10",
+                Publisher = publisherName,
+                ArcExtensionType = arcExtensionType,
+                TypeHandlerVersion = typeHandlerVersion,
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["port"] = "6516"
+                    ["port"] = portNumber
                 }),
-                EnableAutomaticUpgrade = false,
+                EnableAutomaticUpgrade = enableAutoUpgrade,
             };
 ```
 3. Create the Extension
@@ -184,18 +198,39 @@ Documentation is available to help you learn how to use this package:
 ```C# Snippet:
             // invoke the operation
 
-            string extensionName = "AzureMonitorWindowsAgent";
+            string publisherName = "Microsoft.SiteRecovery.Dra";
+            string arcExtensionType = "Windows";
+            string extensionName = "AzureSiteRecovery";
+            string env = "AzureCloud";
+            string subscriptionId = "your SubscriptionId";
+            string resourceGroup = "your ResourceGroup";
+            string resourceName = "your site recovery vault name";
+            string location = "your site recovery region";
+            string siteId = "Id for your recovery site";
+            string siteName = "ypur recovery site name";
+            string policyId = "your resource id for recovery site policy";
+            string pvtEndpointState = "None";
+            bool isAutoUpgrade = false;
+
             ArcExtensionData data = new ArcExtensionData()
             {
-                Publisher = "Microsoft.Azure.Monitor",
-                ArcExtensionType = "AzureMonitorWindowsAgent",
-                TypeHandlerVersion = "1.10",
+                Publisher = publisherName,
+                ArcExtensionType = arcExtensionType,
                 Settings = BinaryData.FromObjectAsJson(new Dictionary<string, object>()
                 {
-                    ["SiteId"]= "d5d04ea1-4672-56f8-ad2c-9318950457db",
-            ["SiteName"]= "nikitaTestSite",
+                    {
+                        "SubscriptionId": subscriptionId,
+                        "Environment": env,
+                        "ResourceGroup": resourceGroup,
+                        "ResourceName": resourceName,
+                        "Location": location,
+                        "SiteId": siteId,
+                        "SiteName": siteName,
+                        "PolicyId": policyId,
+                        "PrivateEndpointStateForSiteRecovery": pvtEndpointState
+}
                 }),
-                EnableAutomaticUpgrade = false,
+                EnableAutomaticUpgrade = isAutoUpgrade,
             };
 ```
 
@@ -219,9 +254,11 @@ Documentation is available to help you learn how to use this package:
 1. Invoke Upgrade operation
 
 ```C# Snippet: 
+            string targetVersion = "1.0.18062.0";
+
             ExtensionUpgradeContent content = new ExtensionUpgradeContent()
             {
-                TargetVersion = "1.0.18062.0",
+                TargetVersion = targetVersion,
             };
             await arcExtension.UpgradeAsync(WaitUntil.Completed, content);
 
@@ -231,7 +268,7 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"Upgradation of Extension Successful!");
+            Console.WriteLine($"Upgradation of Extension Successful!");
 ```
 
 #### Installing azure- managed default extensions
@@ -247,10 +284,9 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of Delete Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"The ARC Extension has been deleted successfully!");
+            Console.WriteLine($"The ARC Extension has been deleted successfully!");
 ```
 
-#### Extension update with update center
 
 ### HCI Cluster Management  
 
@@ -287,8 +323,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id retrieved from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"The Cluster Resource was successfully retrieved with ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"The Cluster Resource was successfully retrieved with ID: {resourceData.Id}");
 ```
 
 #### Delete Single HCI cluster 
@@ -301,7 +337,7 @@ Documentation is available to help you learn how to use this package:
 2. Confirmation of the Operation
 
 ```C# Snippet: 
-        Console.WriteLine($"The delete operation was successful!");
+            Console.WriteLine($"The delete operation was successful!");
 ```
 
 #### Delete all HCI Clusters in a Resource Group
@@ -317,17 +353,17 @@ Documentation is available to help you learn how to use this package:
 2. Calling the delete function for all Cluster Resources in the collection
 
 ```C# Snippet: 
-        await foreach (HciClusterResource item in collection.GetAllAsync())
+            await foreach (HciClusterResource item in collection.GetAllAsync())
             {
                 // delete the item
 
                 await item.DeleteAsync(WaitUntil.Completed);
             }
 ```
-3. Printing the Confirmation Text
+3. Confirming succesful deletion of all HCI Clusters in the Resource Group
 
 ```C# Snippet: 
-        Console.WriteLine($"The delete operation on Hci Cluster Collection was successful!");
+            Console.WriteLine($"The delete operation on Hci Cluster Collection was successful!");
 ```
 
 #### Update HCI Cluster Properties
@@ -335,20 +371,25 @@ Documentation is available to help you learn how to use this package:
 1. Invoke the Update Operation
 
 ```C# Snippet: 
+            string tag1 = "tag1";
+            string val1 = "value1";
+            string tag2 = "tag2";
+            string val2 = "value2";
+            string cloudEndpoint = "https://98294836-31be-4668-aeae-698667faf99b.waconazure.com";
+
             HciClusterPatch patch = new HciClusterPatch()
             {
                 Tags =
                 {
-                ["tag1"] = "value1",
-                ["tag2"] = "value2",
+                [tag1] = val1,
+                [tag2] = val2,
                 },
-                CloudManagementEndpoint = "https://98294836-31be-4668-aeae-698667faf99b.waconazure.com",
+     
                 DesiredProperties = new HciClusterDesiredProperties()
                 {
                     WindowsServerSubscription = WindowsServerSubscription.Enabled,
                     DiagnosticLevel = HciClusterDiagnosticLevel.Basic,
                 },
-                ManagedServiceIdentityType = HciManagedServiceIdentityType.SystemAssigned,
             };
             HciClusterResource result = await hciCluster.UpdateAsync(patch);
 ```
@@ -356,8 +397,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id retrieved from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"Update Operation Succeeded for Cluster ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"Update Operation Succeeded for Cluster ID: {resourceData.Id}");
 ```
 
 #### Enable Azure Hybrid Benefits  
@@ -377,8 +418,8 @@ Documentation is available to help you learn how to use this package:
 2. For confirmation we will print the id from result
 
 ```C# Snippet: 
-        ArcExtensionData resourceData = result.Data;
-        Console.WriteLine($"Software Assurance Benefits Succeessfully Extended to Cluster ID: {resourceData.Id}");
+            ArcExtensionData resourceData = result.Data;
+            Console.WriteLine($"Software Assurance Benefits Succeessfully Extended to Cluster ID: {resourceData.Id}");
 ```
 
 Code samples for using the management library for .NET can be found in the following locations
