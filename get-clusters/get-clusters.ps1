@@ -1,47 +1,34 @@
 $subscriptionId = ""
 $resourceGroup = ""
 $tenantId = ""
+$location = "eastus" 
+$IMDSStatus = "Enabled"
+$softwareStatus = "Enabled"
 
- 
+# Using Powershell
 
-# Using AZ POWERSHELL
-
- 
-
+# Login using Azure Active Directory
 Connect-AzAccount -Tenant $tenantId
 Set-AzContext -Subscription $subscriptionId
 
- 
+# Get clusters with IMDS attestation specified
+"Get clusters with IMDS attestation $IMDSStatus"
+Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object ReportedPropertyImdsAttestation -eq $IMDSStatus | Select-Object Name, Id, location
 
-# Get clusters with IMDS attestation enabled
+# Get clusters in location specified
+"Get clusters in location $location"
+Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object location -eq $location | Select-Object Name, Id
 
- 
+# Using Command Line Interface (CLI)
 
-Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object ReportedPropertyImdsAttestation -eq "Enabled" | Select-Object Name, Id, location
-
- 
-
-# Get clusters in location EastUS
-
- 
-
-Get-AzStackHciCluster -ResourceGroupName $resourceGroup | Where-Object location -eq "eastus" | Select-Object Name, Id
-
- 
-
-# Using AZ CLI
-
- 
-
+# Login using Azure Active Directory
 $login = az login --tenant $tenantId
 az account set -s  $subscriptionId
 
- 
+# Get clusters in location specified
+"Get clusters in location $location"
+az stack-hci cluster list --resource-group $resourceGroup --query "[?location=='$location'].{Name:name, Id:id}" -o table
 
-# get clusters in location EastUS 
-az stack-hci cluster list --resource-group $resourceGroup --query "[?location=='eastus'].{Name:name, Id:id}" -o table
-
- 
-
-# get clusters with software assurance enabled 
-az stack-hci cluster list --resource-group $resourceGroup --query "[?softwareAssuranceProperties.softwareAssuranceIntent=='Enable'].{Name:name, Id:id}" -o table
+# Get clusters with software assurance specified
+"Get clusters with software assurance $softwareStatus"
+az stack-hci cluster list --resource-group $resourceGroup --query "[?softwareAssuranceProperties.softwareAssuranceIntent=='$softwareStatus'].{Name:name, Id:id}" -o table
