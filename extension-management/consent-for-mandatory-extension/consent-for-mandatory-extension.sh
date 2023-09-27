@@ -29,6 +29,7 @@ done
  
 
 # Consent and Install Default Extensions for a particular cluster in a resource group
+$clusterName=""
 az stack-hci arc-setting consent-and-install-default-extension \
                                     --arc-setting-name "default" \
                                     --cluster-name $clusterName \
