@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\install-asr-extension"
+    "\\delete-clusters",
+    "\\extension-management",
+    "\\extension-management\\install-ama-arc-extension\\scripts",
+    "\\extension-management\\install-asr-extension",
+    "\\extension-management\\install-asr-extension\\scripts",
+    "\\extension-management\\install-mma-arc-extension\\script",
+    "\\extension-management\\install-wac-in-portal-arc-extension",
+    "\\extension-management\\install-wac-in-portal-arc-extension\\scripts",
+    "\\get-clusters"
   ],
+  "SelectedNode": "\\extension-management\\install-wac-in-portal-arc-extension\\scripts\\install-wac.ps1",
   "PreviewInSolutionExplorer": false
 }
