@@ -1,41 +1,6 @@
 $subscriptionId = ""
 $resourceGroup = ""
-$tenantId = ""
-
-  
-
-# Using CLI
-
- 
-
-$_ = az login --tenant $tenantId
-$_ = az account set -s  $subscriptionId
-
- 
-
-$clusters = @(az stack-hci cluster list --resource-group $resourceGroup --query "[].name" -o tsv)
-
- 
-
-foreach($cluster in $clusters) {
-    $currentCluster = $cluster
-        Write-Host ("Installing MMA extension for cluster $currentCluster")
-
-    #replace workspace id and workspave key with your own values
-		az stack-hci extension create `
-          --arc-setting-name "default" `
-          --cluster-name $currentCluster `
-          --extension-name "MicrosoftMonitoringAgent" `
-          --resource-group $resourceGroup `
-          --auto-upgrade true `
-          --publisher "Microsoft.EnterpriseCloud.Monitoring" `
-          --type "MicrosoftMonitoringAgent" `
-          --settings "{workspaceId:workspace}" `
-          --protected-settings "{workspaceKey:workspacekey}" `
-          --type-handler-version "1.10"
-
-}
-
+$tenantId = "" 
  
 
 # Using Powershell
