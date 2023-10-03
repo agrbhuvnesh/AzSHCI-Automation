@@ -16,8 +16,8 @@ This library follows the [new Azure SDK guidelines](https://azure.github.io/azur
 
 Install the Azure Stack HCI management library for .NET with [NuGet](https://www.nuget.org/):
 
-```dotnetcli
-dotnet add package Azure.ResourceManager.Hci
+```bash
+            dotnet add package Azure.ResourceManager.Hci
 ```
 
 ### Prerequisites
@@ -51,8 +51,8 @@ Documentation is available to help you learn how to use this package:
 ```
 2. Update the parameters given below
 ```C# Snippet:
-            string subscription = "00000000-0000-0000-0000-000000000000"; # Replace with your subscription ID
-            string resourceGroupName = "hcicluster-rg"; # Replace with your resource group name
+            string subscription = "00000000-0000-0000-0000-000000000000"; // Replace with your subscription ID
+            string resourceGroupName = "hcicluster-rg"; // Replace with your resource group name
 ```
 
 ### Extension Management  
@@ -61,7 +61,7 @@ Documentation is available to help you learn how to use this package:
 
 1. Update the parameters given below
 ```C# Snippet:
-            string clusterName = "HCICluster"; # Replace with your cluster name
+            string clusterName = "HCICluster"; // Replace with your cluster name
 ```
 
 #### Installing Extensions as part of enabling capabilities
@@ -211,7 +211,7 @@ Documentation is available to help you learn how to use this package:
             string targetVersion = "1.0.18062.0"; //replace with extension version you want to install
             ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, "default", extensionName);
             ArcExtensionResource arcExtension = client.GetArcExtensionResource(arcExtensionResourceId);
-            # Invoke Upgrade operation
+            // Invoke Upgrade operation
             ExtensionUpgradeContent content = new ExtensionUpgradeContent()
             {
                 TargetVersion = targetVersion,
@@ -226,10 +226,10 @@ Documentation is available to help you learn how to use this package:
 
 
 ```C# Snippet: 
-            string extensionName = "AzureMonitorWindowsAgent"; // Replace with your extension name Some common examples are: AzureMonitorWindowsAgent, AzureSiteRecovery, AdminCenter
-            ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, "default", extensionName);
+            string extensionName = "AzureMonitorWindowsAgent"; // Replace with your extension name Some common examples are: AzureMonitorWindowsAgent, AzureSiteRecovery,                 AdminCenter
+            ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, "default",                         extensionName);
             ArcExtensionResource arcExtension = client.GetArcExtensionResource(arcExtensionResourceId);
-            # Invoke the delete operation
+            // Invoke the delete operation
             arcExtension.DeleteAsync(WaitUntil.Completed);
 ```
 
@@ -241,13 +241,13 @@ Documentation is available to help you learn how to use this package:
 
 ```C# Snippet: 
 
-            # Get the HCI Cluster
+            // Get the HCI Cluster
             
-            string clusterName = "HCICluster"; # Replace with your cluster name,
+            string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
 
-            # Invoke get operation
+            // Invoke get operation
 
             HciClusterResource result = hciCluster.GetAsync().Result;
 ```
@@ -255,13 +255,13 @@ Documentation is available to help you learn how to use this package:
 #### Delete Single HCI cluster 
 
 ```C# Snippet: 
-            # Get the HCI Cluster
+            // Get the HCI Cluster
 
-            string clusterName = "HCICluster"; # Replace with your cluster name,
+            string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
 
-            # Invoke delete operation
+            // Invoke delete operation
             await hciCluster.DeleteAsync(WaitUntil.Completed);
 ```
 
@@ -275,7 +275,7 @@ Documentation is available to help you learn how to use this package:
             // get the collection of this HciClusterResource
             HciClusterCollection collection = resourceGroupResource.GetHciClusters();
 
-            # Calling the delete function for all Cluster Resources in the collection 
+            // Calling the delete function for all Cluster Resources in the collection 
             await foreach (HciClusterResource item in collection.GetAllAsync())
             {
                 // delete the item
@@ -289,17 +289,17 @@ Documentation is available to help you learn how to use this package:
 
 
 ```C# Snippet: 
-            # Get the HCI Cluster
+            // Get the HCI Cluster
 
-            string clusterName = "HCICluster"; # Replace with your cluster name,
+            string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
 
-            # Invoke the Update Operation
+            // Invoke the Update Operation
 
             string tag1 = "tag1";
             string val1 = "value1";
-            string clusterName = "HCICluster"; # Replace with your cluster name,
+            string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
 
@@ -325,7 +325,7 @@ Documentation is available to help you learn how to use this package:
 1. Invoke the Operation to Extend Azure Hybrid Benefit
 
 ```C# Snippet: 
-            string clusterName = "HCICluster"; # Replace with your cluster name,
+            string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
             SoftwareAssuranceChangeContent content = new SoftwareAssuranceChangeContent()
