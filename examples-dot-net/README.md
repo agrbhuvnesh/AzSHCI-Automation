@@ -45,12 +45,12 @@ Documentation is available to help you learn how to use this package:
 
 1. Get the Azure token
 
-```C# Snippet: 
+```csharp 
             TokenCredential cred = new DefaultAzureCredential();
             ArmClient client = new ArmClient(cred);
 ```
 2. Update the parameters given below
-```C# Snippet:
+```csharp 
             string subscription = "00000000-0000-0000-0000-000000000000"; // Replace with your subscription ID
             string resourceGroupName = "hcicluster-rg"; // Replace with your resource group name
 ```
@@ -60,7 +60,7 @@ Documentation is available to help you learn how to use this package:
 ##### Prerequisites
 
 1. Update the parameters given below
-```C# Snippet:
+```csharp 
             string clusterName = "HCICluster"; // Replace with your cluster name
 ```
 
@@ -68,7 +68,7 @@ Documentation is available to help you learn how to use this package:
 
 ##### Install Azure Monitor Windows Agent Extension
 
-```C# Snippet:
+```csharp 
             // Create the Payload and invoke the operation
 
             string extensionName = "AzureMonitorWindowsAgent";
@@ -106,7 +106,7 @@ Documentation is available to help you learn how to use this package:
 
 ##### Install Windows Admin Centre Extension
 
-```C# Snippet:
+```csharp 
 
             // For installing Windows Admin Center, we need to enable network connectivity first
 
@@ -152,7 +152,7 @@ Documentation is available to help you learn how to use this package:
  
 ##### Install Azure Site Recovery Extension
 
-```C# Snippet:
+```csharp 
             // Create the Payload
 
             string publisherName = "Microsoft.SiteRecovery.Dra";
@@ -206,7 +206,7 @@ Documentation is available to help you learn how to use this package:
 
 
 
-```C# Snippet: 
+```csharp  
             string extensionName = "AzureMonitorWindowsAgent"; // Replace with your extension name Some common examples are: AzureMonitorWindowsAgent, AzureSiteRecovery, AdminCenter
             string targetVersion = "1.0.18062.0"; //replace with extension version you want to install
             ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, "default", extensionName);
@@ -225,7 +225,7 @@ Documentation is available to help you learn how to use this package:
 
 
 
-```C# Snippet: 
+```csharp  
             string extensionName = "AzureMonitorWindowsAgent"; // Replace with your extension name Some common examples are: AzureMonitorWindowsAgent, AzureSiteRecovery,                 AdminCenter
             ResourceIdentifier arcExtensionResourceId = ArcExtensionResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName, "default",                         extensionName);
             ArcExtensionResource arcExtension = client.GetArcExtensionResource(arcExtensionResourceId);
@@ -239,7 +239,7 @@ Documentation is available to help you learn how to use this package:
 
 ##### Get Single HCI Cluster using Cluster Name
 
-```C# Snippet: 
+```csharp  
 
             // Get the HCI Cluster
             
@@ -254,7 +254,7 @@ Documentation is available to help you learn how to use this package:
 
 #### Delete Single HCI cluster 
 
-```C# Snippet: 
+```csharp  
             // Get the HCI Cluster
 
             string clusterName = "HCICluster"; // Replace with your cluster name,
@@ -268,7 +268,7 @@ Documentation is available to help you learn how to use this package:
 #### Delete all HCI Clusters in a Resource Group
 
 
-```C# Snippet: 
+```csharp  
             ResourceIdentifier resourceGroupResourceId = ResourceGroupResource.CreateResourceIdentifier(subscriptionId, resourceGroupName);
             ResourceGroupResource resourceGroupResource = client.GetResourceGroupResource(resourceGroupResourceId);
 
@@ -288,7 +288,7 @@ Documentation is available to help you learn how to use this package:
 
 
 
-```C# Snippet: 
+```csharp  
             // Get the HCI Cluster
 
             string clusterName = "HCICluster"; // Replace with your cluster name,
@@ -324,7 +324,7 @@ Documentation is available to help you learn how to use this package:
 
 1. Invoke the Operation to Extend Azure Hybrid Benefit
 
-```C# Snippet: 
+```csharp  
             string clusterName = "HCICluster"; // Replace with your cluster name,
             ResourceIdentifier hciClusterResourceId = HciClusterResource.CreateResourceIdentifier(subscriptionId, resourceGroupName, clusterName);
             HciClusterResource hciCluster = client.GetHciClusterResource(hciClusterResourceId);
