@@ -1,11 +1,15 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
-location="eastus"
-IMDSStatus="Enabled"
-softwareStatus="Enabled"
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+location=$(echo "$variables" | jq -r '.location')
+IMDSStatus=$(echo "$variables" | jq -r '.IMDSStatus')
+softwareStatus=$(echo "$variables" | jq -r '.softwareStatus')
 
 # Login using Azure Active Directory
 login=$(az login --tenant $tenantId)

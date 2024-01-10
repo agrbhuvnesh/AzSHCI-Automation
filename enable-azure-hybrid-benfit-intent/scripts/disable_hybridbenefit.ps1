@@ -1,6 +1,8 @@
-$subscription = ""
-$resourceGroup = ""
-$tenant = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscription = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenant = $variables.tenantId
 $resourceType = "Microsoft.AzureStackHCI/clusters"
 
 # Using Powershell

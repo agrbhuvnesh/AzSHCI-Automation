@@ -1,8 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+clusterName=$(echo "$variables" | jq -r '.clusterName')
  
 
 # Login using Azure Active Directory
@@ -29,7 +34,6 @@ done
  
 
 # Consent and Install Default Extensions for a particular cluster in a resource group
-$clusterName=""
 az stack-hci arc-setting consent-and-install-default-extension \
                                     --arc-setting-name "default" \
                                     --cluster-name $clusterName \

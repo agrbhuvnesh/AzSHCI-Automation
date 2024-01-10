@@ -1,6 +1,9 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$clusterName = $variables.clusterName
 
 # Using Powershell
 
@@ -19,6 +22,5 @@ foreach ($cluster in $clusters) {
 }
 
 # Delete a particular cluster in a resource group
-$clusterName = ""
 "Deleting cluster $clusterName"
 Remove-AzStackHciCluster -Name $clusterName -ResourceGroupName $resourceGroup

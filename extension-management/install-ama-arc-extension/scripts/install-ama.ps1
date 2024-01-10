@@ -1,9 +1,11 @@
 # This scripts configures insights for a cluster by creating DCR, installing AMA and associating DCR.
 
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantID = ""
-$DCRFilePath = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantID = $variables.tenantId
+$DCRFilePath = "./DCRAssociation.json"
 $AMATestRuleName = "AMATestRule"
 $description = "Test DCR Rule for AMA"
 $location = "East US"

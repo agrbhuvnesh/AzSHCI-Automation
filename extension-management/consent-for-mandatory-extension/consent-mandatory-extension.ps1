@@ -1,6 +1,9 @@
-$subscriptionId = "" #enter subscription id here
-$resourceGroup = "" #enter the resource group where the clusters exist
-$tenantId = "" #enter the tenant id here
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$clusterName = $variables.clusterName
 
 #With Az-RestMethod
 
@@ -39,8 +42,6 @@ foreach ($cluster in $clusters) {
 }
 
 #Consent and Install Default Extensions for a particular cluster in a resource group
-
-$clusterName = ""
 
 Invoke-AzStackHciConsentAndInstallDefaultExtension `
                         -ResourceGroupName $resourceGroup `

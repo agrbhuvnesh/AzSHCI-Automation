@@ -1,8 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+clusterName=$(echo "$variables" | jq -r '.clusterName')
 desiredProperties="{diagnosticLevel:Basic,windowsServerSubscription:Disabled}"
 
 # Login using Azure Active Directory
@@ -22,7 +27,6 @@ az stack-hci cluster update \
 
 # Update Diagnostic Level as "Enhanced" and setting WSS as "Disabled" for a particular cluster with tags
 echo "Updating Diagnostic Level as Enhanced and and setting WSS as Disabled for $clusterName with tags"
-clusterName=""
 az stack-hci cluster update \
 				--desired-properties $desiredProperties \
 				--tags tag1="tag1" tag2="tag2" \

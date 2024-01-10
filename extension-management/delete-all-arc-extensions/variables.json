@@ -1,0 +1,10 @@
+{
+    "subscriptionId": "your_subscription_id",
+    "resourceGroup": "your_resource_group",
+    "tenantId": "your_tenant_id",
+    "clusterName": "your_cluster_name",
+    "location": "your_location",
+    "softwareStatus": "your_software_status",
+    "IMDSStatus": "your_imds_status",
+    "extensionName": "your_extension_name"
+}

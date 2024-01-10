@@ -1,8 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+clusterName=$(echo "$variables" | jq -r '.clusterName')
 
 # Using Command Line Interface (CLI)
 
@@ -22,7 +27,6 @@ az stack-hci cluster extend-software-assurance-benefit \
                                     --software-assurance-intent "enable"
 
 # Enable Hybrid benefit for a particular cluster in a resource group
-clusterName=""
 echo "Enabling Azure Hybrid Benefit for cluster $clusterName"
 az stack-hci cluster extend-software-assurance-benefit \
                                     --cluster-name $clusterName \

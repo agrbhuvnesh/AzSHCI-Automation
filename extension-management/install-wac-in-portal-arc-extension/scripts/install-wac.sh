@@ -1,8 +1,12 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
 settingsConfig="{'port':'6516'}"
 extensionname="AdminCenter"
 publisherName="Microsoft.AdminCenter"

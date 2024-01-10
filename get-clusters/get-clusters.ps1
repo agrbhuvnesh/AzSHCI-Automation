@@ -1,9 +1,10 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
-$location = "eastus" 
-$IMDSStatus = "Enabled"
-$softwareStatus = "Enabled"
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$location = $variables.location
+$IMDSStatus = $variables.IMDSStatus
 
 # Using Powershell
 

@@ -1,7 +1,11 @@
-tenantID=""
-subscriptionId=""
-resourceGroup=""
-parametersFilePath="path to asr parameters file"
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantID=$(echo "$variables" | jq -r '.tenantId')
+parametersFilePath="./asr-parameters.json"
 arcsettingname="default"
 extensionname="ASRExtension"
 publisherName="Microsoft.SiteRecovery.Dra"

@@ -1,6 +1,9 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$clusterName = $variables.clusterName
 $desiredProperties = "{diagnosticLevel:Basic,windowsServerSubscription:Disabled}"
 $resourceType = "Microsoft.AzureStackHCI/clusters"
 $desiredPropertyDiagLevel = "Enhanced"
@@ -29,7 +32,6 @@ foreach($currentCluster in $clusters) {
 }
 
 # Update Diagnostic Level as "Enhanced" and setting WSS as "Disabled" for a particular cluster with tags
-$clusterName = ""
 "Updating Diagnostic Level as Enhanced and and setting WSS as Disabled for $clusterName"
 Update-AzStackHciCluster -Name $clusterName `
 						-ResourceGroupName $resourceGroup `

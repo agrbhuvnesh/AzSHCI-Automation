@@ -1,15 +1,13 @@
 #!/bin/bash
 
- 
+# Load from Json file
+variables=$(jq '.' variables.json)
 
-# Variables
-
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
 resourceType="Microsoft.AzureStackHCI/clusters"
-
- 
 
 # Using Command Line Interface (CLI)
 
