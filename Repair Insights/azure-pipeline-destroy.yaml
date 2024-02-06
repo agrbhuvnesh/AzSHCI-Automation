@@ -1,0 +1,46 @@
+trigger: none
+
+jobs:
+- job: TerraformDestroy
+  displayName: 'Terraform Plan and Apply'
+  pool:
+    vmImage: 'ubuntu-22.04'
+  steps:
+
+  - task: AzureCLI@2
+    inputs:
+      addSpnToEnvironment: true
+      azureSubscription: 'hcipg-dev-pol-test-sp-sc'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        cd terraform
+        # sh
+        export ARM_CLIENT_ID=$servicePrincipalId
+        export ARM_CLIENT_SECRET=$servicePrincipalKey
+        export ARM_TENANT_ID=$tenantId
+        export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+
+        terraform init \
+          -backend=true \
+          -backend-config="resource_group_name=terraform-backend-policy-test-rg" \
+          -backend-config="storage_account_name=tfbackendpoltest" \
+          -backend-config="container_name=tfbcontainer" \
+          -backend-config="key=hcipolicytest.tfstate"
+    displayName: 'Terraform Init'
+
+  - task: AzureCLI@2
+    inputs:
+      addSpnToEnvironment: true
+      azureSubscription: 'hcipg-dev-pol-test-sp-sc'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: | 
+        cd terraform
+        export ARM_CLIENT_ID=$servicePrincipalId
+        export ARM_CLIENT_SECRET=$servicePrincipalKey
+        export ARM_TENANT_ID=$tenantId
+        export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+
+        terraform destroy -auto-approve
+    displayName: 'Terraform Destroy'
