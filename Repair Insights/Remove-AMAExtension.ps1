@@ -14,10 +14,10 @@ foreach ($subscriptionId in $subscriptionIds) {
         foreach ($clusterName in $clusters) {
             $maxTryAttempt = 10
             Remove-AzStackHCIExtension `
-                -ClusterName "cluster-6b5685dccad34fff9231e1bdecfa96ce" `
+                -ClusterName $clusterName `
                 -ArcSettingName "default" `
                 -Name "AzureMonitorWindowsAgent" `
-                -ResourceGroupName "EDGECI-REGISTRATION-rr1n22r1406-2hLm5H7z"
+                -ResourceGroupName $resourceGroup
 
             # once the extension is deleted, it will throw a resource not found error 
             try {
