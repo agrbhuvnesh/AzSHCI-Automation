@@ -7,11 +7,23 @@ foreach ($subscriptionId in $subscriptionIds) {
     Set-AzContext -SubscriptionId $subscriptionId
 
     $resource_groups = Get-AzResourceGroup -Name "*_S[V|N|Q|W|S|T][0-9]{4}_" | Select-Object -ExpandProperty ResourceGroupName
+    Write-Host("Resource Groups found: ", $resource_groups)
+
+    foreach ($resourceGroup in $resource_groups)
+    {
+        $resourceType = "Microsoft.AzureStackHCI/clusters" 
+        $clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType $resourceType | Select-Object -ExpandProperty Name
+        Write-Host ("For resource group: " + $resourceGroup + ", AMA Extension will be uninstalled for clusters: " + $clusters)
+    }
 
     foreach ($resourceGroup in $resource_groups) {
         $resourceType = "Microsoft.AzureStackHCI/clusters" 
         $clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType $resourceType | Select-Object -ExpandProperty Name
+        $clustersAMAUninstallSuccess = @()
+        $clustersAMAUninstallFailed = @()
         foreach ($clusterName in $clusters) {
+            Write-Host ("Uninstalling AMA extension for cluster: ", $clusterName)
+
             $maxTryAttempt = 10
             Remove-AzStackHCIExtension `
                 -ClusterName $clusterName `
@@ -35,18 +47,25 @@ foreach ($subscriptionId in $subscriptionIds) {
                 {
                     $extensionDeleted = $true
                     Write-Host("Extension deleted successfully for cluster: ", $clusterName)
+                    $clustersAMAUninstallSuccess += $clusterName
                 }
                 else
                 {
                     Write-Host ($_.Exception)
                     Write-Host("Extension NOT deleted for cluster: ", $clusterName)
+                    $clustersAMAUninstallFailed += $clusterName
                 } 
             }
             if($maxTryAttempt -le 0)
             {
                 $state = (Get-AzStackHciExtension -ClusterName $clusterName -Name "AzureWindowsMonitoringAgent" -ResourceGroupName $resourceGroup -ArcSettingName default -ErrorAction Stop).ProvisioningState
                 Write-Host("Extension in state: " + $state + " for cluster: " + $clusterName)
+                $clustersAMAUninstallFailed += $clusterName
             }
         }
     }
+    Write-Host ("For subscriptionId: ", $subscriptionId)
+    Write-Host ("Clusters with AMA uninstallation successful: ", $clustersAMAUninstallSuccess)
+    Write-Host ("Clusters with AMA uninstallation failed: ", $clustersAMAUninstallFailed)
+    Write-Host ("-----------------------------------------------------------------------------------------------")
 }
