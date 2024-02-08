@@ -7,10 +7,13 @@ foreach ($subscriptionId in $subscriptionIds) {
     Set-AzContext -SubscriptionId $subscriptionId
 
     $resource_groups = Get-AzResourceGroup -Name "*_S[V|N|Q|W|S|T][0-9]{4}_" | Select-Object -ExpandProperty ResourceGroupName
+    Write-Host("Resource Groups found: ", $resource_groups)
 
     foreach ($resourceGroup in $resource_groups) {
         $resourceType = "Microsoft.AzureStackHCI/clusters" 
         $clusters = Get-AzResource -ResourceGroupName $resourceGroup -ResourceType $resourceType | Select-Object -ExpandProperty Name
+        $clustersForWhichAMAUninstallSuccess = @()
+        $clustersForWhichAMAUninstallFailed = @()
         foreach ($clusterName in $clusters) {
             $maxTryAttempt = 10
             Remove-AzStackHCIExtension `
@@ -35,18 +38,25 @@ foreach ($subscriptionId in $subscriptionIds) {
                 {
                     $extensionDeleted = $true
                     Write-Host("Extension deleted successfully for cluster: ", $clusterName)
+                    $clustersForWhichAMAUninstallSuccess += $clusterName
                 }
                 else
                 {
                     Write-Host ($_.Exception)
                     Write-Host("Extension NOT deleted for cluster: ", $clusterName)
+                    $clustersForWhichAMAUninstallFailed += $clusterName
                 } 
             }
             if($maxTryAttempt -le 0)
             {
                 $state = (Get-AzStackHciExtension -ClusterName $clusterName -Name "AzureWindowsMonitoringAgent" -ResourceGroupName $resourceGroup -ArcSettingName default -ErrorAction Stop).ProvisioningState
                 Write-Host("Extension in state: " + $state + " for cluster: " + $clusterName)
+                $clustersForWhichAMAUninstallFailed += $clusterName
             }
         }
     }
+    Write-Host ("For subscriptionId: ", $subscriptionId)
+    Write-Host ("Clusters for which AMA got uninstalled successfully: ", $clustersForWhichAMAUninstallSuccess)
+    Write-Host ("Clusters for which AMA uninstallation failed: ", $clustersForWhichAMAUninstallFailed)
+    Write-Host ("-----------------------------------------------------------------------------------------------")
 }
