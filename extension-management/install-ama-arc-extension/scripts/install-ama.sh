@@ -1,9 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantID=""
-DCRFilePath=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantID=$(echo "$variables" | jq -r '.tenantId')
+DCRFilePath="./DCRAssociation.json"
 AMATestRuleName="AMATestRule"
 description="Test DCR Rule for AMA"
 location="East US"

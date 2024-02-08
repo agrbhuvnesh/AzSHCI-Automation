@@ -1,8 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+extensionName=$(echo "$variables" | jq -r '.extensionName')
 
 # Login using Azure Active Directory
 login=$(az login --tenant $tenantId)
@@ -25,7 +30,6 @@ for currentCluster in $clusters; do
 done
 
 # To delete a particular extension for all the clusters in the resource-group 
-extensionName="AzureMonitorWindowsAgent"
 
 echo "To delete a $extensionName extension for all the clusters in the resource-group "
 for currentCluster in $clusters; do

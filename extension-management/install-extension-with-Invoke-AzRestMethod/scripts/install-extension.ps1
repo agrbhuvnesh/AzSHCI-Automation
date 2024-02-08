@@ -1,7 +1,9 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
-$extensionName = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$extensionName = $variables.extensionName
 $apiVersion = "2023-03-01"
 
 $extensionPayload = Get-Content -Path ".\extension-payload.json" -Raw

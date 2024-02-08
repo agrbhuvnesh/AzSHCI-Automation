@@ -1,6 +1,8 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
 $enableAutomaticUpgrade = $true
 $apiVersion = "2023-03-01"
 

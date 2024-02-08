@@ -1,6 +1,9 @@
-$subscriptionId = ""
-$resourceGroup = ""
-$tenant = ""
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenant = $variables.tenantId
+$clusterName = $variables.clusterName
 $resourceType = "Microsoft.AzureStackHCI/clusters"
 
 # Using Powershell
@@ -23,7 +26,6 @@ Foreach ($cluster in $Clusters) {
 }
 
 # Enable Hybrid benefit for a particular cluster in a resource group
-$clusterName = ""
 "Enabling Azure Hybrid Benefit for cluster $clusterName"
 Invoke-AzStackHciExtendClusterSoftwareAssuranceBenefit `
                                     -ClusterName $clusterName `

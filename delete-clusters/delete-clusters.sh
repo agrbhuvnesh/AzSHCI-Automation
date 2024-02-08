@@ -1,8 +1,13 @@
 #!/bin/bash
 
-subscriptionId=""
-resourceGroup=""
-tenantId=""
+# Load from Json file
+variables=$(jq '.' variables.json)
+
+# Assign variables
+subscriptionId=$(echo "$variables" | jq -r '.subscriptionId')
+resourceGroup=$(echo "$variables" | jq -r '.resourceGroup')
+tenantId=$(echo "$variables" | jq -r '.tenantId')
+clusterName=$(echo "$variables" | jq -r '.clusterName')
 
 # Login using Azure Active Directory
 login=$(az login --tenant $tenantId)
@@ -17,6 +22,5 @@ echo "Deleting all clusters in the resource group"
 az stack-hci cluster delete --ids $clusterIds --resource-group $resourceGroup
 
 # Delete a particular cluster in a resource group
-clusterName=""
 echo "Deleting cluster $clusterName"
 az stack-hci cluster delete --name $clusterName --resource-group $resourceGroup

@@ -1,0 +1,6 @@
+{
+    "subscriptionId": "your_subscription_id",
+    "resourceGroup": "your_resource_group",
+    "tenantId": "your_tenant_id",
+    "clusterName": "your_cluster_name"
+}

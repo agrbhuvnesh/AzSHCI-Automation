@@ -1,7 +1,9 @@
-$tenantID = ""
-$subscriptionId = ""
-$resourceGroup = ""
-$parametersFilePath = "path to asr parameters file" 
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
+
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantID = $variables.tenantId
+$parametersFilePath = "./asr-parameters.json"
 $extensionname = "ASRExtension"
 $publisherName = "Microsoft.SiteRecovery.Dra"
 $extensionType = "Windows"

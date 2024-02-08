@@ -1,7 +1,10 @@
+$variables = Get-Content "./variables.json" | ConvertFrom-Json
 
-$subscriptionId = ""
-$resourceGroup = ""
-$tenantId = ""
+$subscriptionId = $variables.subscriptionId
+$resourceGroup = $variables.resourceGroup
+$tenantId = $variables.tenantId
+$extensionName = $variables.extensionName
+$IMDSStatus = $variables.IMDSStatus
 
 # Using Powershell
 
@@ -21,7 +24,6 @@ foreach ($extension in $extensions) {
 }
 
 # Delete a particular extension for a cluster in the resource group
-$extensionName = ""
 "Delete a particular extension $extensionName for a cluster $clusterName in the resource group"
 Remove-AzStackHciExtension -ClusterName $clusterName `
                             -ResourceGroupName $resourceGroup `
